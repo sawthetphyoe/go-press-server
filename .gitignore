@@ -32,7 +32,6 @@ yarn-error.log*
 # Project specific
 static/sites/
 static/css/tailwind.css
-data/sample_project.json
 tls/
 *.zip
 

@@ -1,0 +1,32 @@
+{
+  "name": "My Blog Site",
+  "description": "A sample blog site generated using our static site generator",
+  "components": [
+    {
+      "type": "header",
+      "classNames": ["bg-blue-500", "p-4", "text-white"],
+      "title": "My Awesome Blog"
+    },
+    {
+      "type": "blogPost",
+      "classNames": [
+        "p-6",
+        "max-w-2xl",
+        "mx-auto",
+        "bg-white",
+        "rounded-lg",
+        "shadow-md"
+      ],
+      "title": "Getting Started with Go",
+      "createdDate": "2024-04-15",
+      "author": "John Doe",
+      "readTime": "5 min read",
+      "content": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+    },
+    {
+      "type": "footer",
+      "classNames": ["bg-gray-800", "text-white", "p-4", "text-center"],
+      "companyName": "Tech Blog Inc."
+    }
+  ]
+}
