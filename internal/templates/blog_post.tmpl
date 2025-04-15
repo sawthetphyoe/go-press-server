@@ -1,0 +1,24 @@
+{{define "blogPost"}}
+<article class="{{range .ClassNames}}{{.}} {{end}}">
+    {{if .ImageURL}}
+    <img src="{{.ImageURL}}" alt="{{.Title}}" class="w-full h-64 object-cover rounded-t-lg">
+    {{end}}
+    <div class="p-6">
+        <h2 class="text-2xl font-bold mb-2">{{.Title}}</h2>
+        <div class="flex items-center text-gray-600 mb-4">
+            <span>{{.CreatedDate}}</span>
+            {{if .Author}}
+            <span class="mx-2">•</span>
+            <span>{{.Author}}</span>
+            {{end}}
+            {{if .ReadTime}}
+            <span class="mx-2">•</span>
+            <span>{{.ReadTime}}</span>
+            {{end}}
+        </div>
+        <div class="prose">
+            {{.Content}}
+        </div>
+    </div>
+</article>
+{{end}} 

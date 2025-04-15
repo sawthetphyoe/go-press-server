@@ -1,0 +1,22 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Name}}</title>
+    <link href="css/tailwind.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    {{range .Components}}
+        {{if eq .Type "header"}}
+            {{template "header" .}}
+        {{else if eq .Type "blogPost"}}
+            {{template "blogPost" .}}
+        {{else if eq .Type "footer"}}
+            {{template "footer" .}}
+        {{end}}
+    {{end}}
+</body>
+</html>
+{{end}} 
