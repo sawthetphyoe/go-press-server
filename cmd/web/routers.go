@@ -26,13 +26,13 @@ func (app *application) routes() http.Handler {
 
 	// Job endpoints
 	router.HandlerFunc(http.MethodPost, "/projects/:id/build", app.submitBuildJob)
-	router.HandlerFunc(http.MethodGet, "/jobs/:id", app.getJobStatus)
 	router.HandlerFunc(http.MethodGet, "/jobs/:id/download", app.downloadJobResult)
+	router.HandlerFunc(http.MethodGet, "/jobs/:id/check", app.checkJobAvailability)
 
 	// WebSocket endpoint
 	router.HandlerFunc(http.MethodGet, "/ws", app.handleWebSocket)
 
-	standard := alice.New(app.recoverPanic, app.logRequest, app.secureHeaders)
+	standard := alice.New(cors, app.recoverPanic, app.logRequest, app.secureHeaders)
 
 	return standard.Then(router)
 }

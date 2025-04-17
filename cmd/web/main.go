@@ -1,97 +1,99 @@
 package main
 
 import (
-	"flag"
-	"log"
+	"context"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
+	"sawthet.go-press-server.net/internal/services"
 	"sawthet.go-press-server.net/internal/services/job"
 	"sawthet.go-press-server.net/internal/services/websocket"
+	"sawthet.go-press-server.net/internal/utils"
 )
 
 type application struct {
-	infoLog       *log.Logger
-	errorLog      *log.Logger
-	jobQueue      *job.JobQueue
-	socketManager *websocket.SocketManager
-}
-
-// CORS middleware
-func cors(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Allow all origins
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		// Allow specific methods
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		// Allow specific headers
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		// Handle preflight requests
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
+	infoLog         *utils.ColoredLogger
+	errorLog        *utils.ColoredLogger
+	jobQueue        *job.JobQueue
+	socketManager   *websocket.SocketManager
+	templateService *services.TemplateService
+	cssCompiler     *services.CSSCompiler
 }
 
 func main() {
-	// Define command-line flags
-	addr := flag.String("addr", ":4000", "HTTP network address")
-
-	flag.Parse()
-
-	// Create new loggers for the application
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	// Initialize loggers
+	infoLog := utils.NewColoredLogger("INFO", "\033[32m")   // Green color for info
+	errorLog := utils.NewColoredLogger("ERROR", "\033[31m") // Red color for error
 
 	// Initialize job queue with 2 workers
-	jobQueue := job.NewJobQueue(2)
+	jobQueue := job.NewJobQueue(2, infoLog, errorLog)
 
 	// Initialize WebSocket manager
 	socketManager := websocket.NewSocketManager(jobQueue)
 
-	// Initialize a new instance of application
+	// Initialize services
+	templateService, err := services.NewTemplateService()
+	if err != nil {
+		errorLog.Printf("Failed to initialize template service: %v", err)
+		os.Exit(1)
+	}
+
+	cssCompiler, err := services.NewCSSCompiler()
+	if err != nil {
+		errorLog.Printf("Failed to initialize CSS compiler: %v", err)
+		os.Exit(1)
+	}
+
+	// Initialize application
 	app := &application{
-		infoLog:       infoLog,
-		errorLog:      errorLog,
-		jobQueue:      jobQueue,
-		socketManager: socketManager,
+		infoLog:         infoLog,
+		errorLog:        errorLog,
+		jobQueue:        jobQueue,
+		socketManager:   socketManager,
+		templateService: templateService,
+		cssCompiler:     cssCompiler,
 	}
 
-	// TLS Config is not needed for local development
-	// tlsConfig := &tls.Config{
-	// 	CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
-	// 	CipherSuites: []uint16{
-	// 		tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-	// 		tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-	// 		tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
-	// 		tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
-	// 		tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-	// 		tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-	// 	},
-	// 	MinVersion: tls.VersionTLS12,
-	// 	MaxVersion: tls.VersionTLS13,
-	// }
-
-	// Create a new HTTP server
-	srv := &http.Server{
-		Addr:     *addr,
-		ErrorLog: errorLog,
-		Handler:  cors(app.routes()),
-		// TLSConfig:    tlsConfig,
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
-		// TODO: Need to configure short write timeout with socket server implementation
-		WriteTimeout: 30 * time.Second,
+	// Create server
+	server := &http.Server{
+		Addr:         ":4000",
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
-	// Start the server and listen for requests
-	infoLog.Printf("Starting server on %s", *addr)
-	// err := srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
-	err := srv.ListenAndServe()
-	errorLog.Fatal(err)
+	// Channel to receive OS signals
+	done := make(chan os.Signal, 1)
+	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	// Start server in a goroutine
+	go func() {
+		infoLog.Printf("Server starting on %s", server.Addr)
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			errorLog.Printf("Server error: %v", err)
+			os.Exit(1)
+		}
+	}()
+
+	// Wait for interrupt signal
+	<-done
+	infoLog.Println("Server is gracefully shutting down...")
+
+	// Cleanup all jobs
+	jobQueue.CleanupAllJobs()
+
+	// Create shutdown context with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Attempt graceful shutdown
+	if err := server.Shutdown(ctx); err != nil {
+		errorLog.Printf("Server forced to shutdown: %v", err)
+	}
+
+	infoLog.Println("Server exited properly")
 }

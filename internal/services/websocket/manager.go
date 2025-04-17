@@ -65,6 +65,10 @@ func (sm *SocketManager) HandleConnection(w http.ResponseWriter, r *http.Request
 }
 
 func (sm *SocketManager) monitorJobProgress(jobID string, conn *websocket.Conn) {
+	var lastStatus job.JobStatus
+	var lastProgress int
+	var lastMessage string
+
 	for {
 		buildJob, err := sm.jobQueue.GetJobStatus(jobID)
 		if err != nil {
@@ -72,7 +76,15 @@ func (sm *SocketManager) monitorJobProgress(jobID string, conn *websocket.Conn) 
 			return
 		}
 
-		sm.sendProgress(conn, jobID, string(buildJob.Status), buildJob.Progress, buildJob.Message)
+		// Only send update if something has changed
+		if buildJob.Status != lastStatus || buildJob.Progress != lastProgress || buildJob.Message != lastMessage {
+			sm.sendProgress(conn, jobID, string(buildJob.Status), buildJob.Progress, buildJob.Message)
+
+			// Update last known values
+			lastStatus = buildJob.Status
+			lastProgress = buildJob.Progress
+			lastMessage = buildJob.Message
+		}
 
 		if buildJob.Status == job.StatusCompleted || buildJob.Status == job.StatusFailed {
 			return
@@ -97,5 +109,22 @@ func (sm *SocketManager) sendProgress(conn *websocket.Conn, jobID, status string
 
 	if err := conn.WriteJSON(msg); err != nil {
 		log.Printf("Error sending message: %v", err)
+	}
+}
+
+// Cleanup closes all active WebSocket connections
+func (sm *SocketManager) Cleanup() {
+	sm.clientsMux.Lock()
+	defer sm.clientsMux.Unlock()
+
+	for jobID, conn := range sm.clients {
+		// Send close message
+		conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseGoingAway, "Server shutting down"))
+
+		// Close connection
+		conn.Close()
+
+		// Remove from map
+		delete(sm.clients, jobID)
 	}
 }

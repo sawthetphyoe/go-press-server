@@ -10,10 +10,12 @@ import (
 	"sawthet.go-press-server.net/internal/services/css/shared"
 )
 
+// CSSCompiler handles CSS compilation with Tailwind CSS
 type CSSCompiler struct {
 	tempDir string
 }
 
+// NewCSSCompiler creates a new CSSCompiler instance
 func NewCSSCompiler() (*CSSCompiler, error) {
 	// Initialize shared node_modules
 	if err := shared.Setup(shared.Config{}); err != nil {

@@ -38,6 +38,7 @@ type BlogPostComponent struct {
 type Project struct {
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
+	CSS         string      `json:"css,omitempty"`
 	Components  []Component `json:"components"`
 }
 
@@ -97,4 +98,4 @@ func (p *Project) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
-} 
+}

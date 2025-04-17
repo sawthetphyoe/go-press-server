@@ -68,7 +68,8 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #f8f8f8;
-        max-height: 200px;
+        min-height: 400px;
+        max-height: 700px;
         overflow-y: auto;
       }
       .log-entry {
@@ -165,12 +166,12 @@
         addLogEntry("Connecting to WebSocket...");
 
         socket.onopen = () => {
-          addLogEntry("WebSocket connected");
+          addLogEntry("WebSocket connected!");
         };
 
         socket.onmessage = (event) => {
           const data = JSON.parse(event.data);
-          addLogEntry(`Status update: ${data.message} (${data.progress}%)`);
+          addLogEntry(`${data.message}`);
           updateStatus(data);
         };
 
@@ -197,11 +198,9 @@
           document.getElementById("statusMessage").classList.add("success");
           document.getElementById("startBuild").disabled = false;
           document.getElementById("downloadSection").classList.remove("hidden");
-          addLogEntry("Build completed successfully!");
         } else if (data.status === "failed") {
           document.getElementById("statusMessage").classList.add("error");
           document.getElementById("startBuild").disabled = false;
-          addLogEntry("Build failed!");
         }
       }
 
