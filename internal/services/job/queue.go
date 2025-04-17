@@ -24,15 +24,20 @@ const (
 )
 
 type BuildJob struct {
-	ID        string
-	Project   models.Project
-	Status    JobStatus
-	Progress  int
-	Message   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	ExpiresAt time.Time
-	Result    *BuildResult
+	ID           string
+	Project      models.Project
+	Status       JobStatus
+	Progress     int
+	Message      string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	ExpiresAt    time.Time
+	Result       *BuildResult
+	ProgressChan chan struct {
+		Status   JobStatus
+		Progress int
+		Message  string
+	}
 }
 
 type BuildResult struct {
@@ -104,6 +109,11 @@ func (q *JobQueue) SubmitJob(project models.Project) string {
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		ExpiresAt: time.Now().Add(30 * time.Minute),
+		ProgressChan: make(chan struct {
+			Status   JobStatus
+			Progress int
+			Message  string
+		}, 100),
 	}
 
 	q.jobsMux.Lock()
@@ -140,7 +150,7 @@ func (q *JobQueue) worker() {
 }
 
 func (q *JobQueue) processJob(job *BuildJob) {
-	q.updateJobStatus(job, StatusRunning, 0, "Starting build process")
+	q.updateJobStatus(job, StatusRunning, 0, "Starting build process...")
 
 	// Initialize services
 	templateService, err := services.NewTemplateService()
@@ -225,6 +235,13 @@ func (q *JobQueue) updateJobStatus(job *BuildJob, status JobStatus, progress int
 	job.Progress = progress
 	job.Message = message
 	job.UpdatedAt = time.Now()
+
+	// Send update to channel (blocking)
+	job.ProgressChan <- struct {
+		Status   JobStatus
+		Progress int
+		Message  string
+	}{status, progress, message}
 }
 
 // startCleanupRoutine runs a background routine to clean up expired jobs

@@ -126,7 +126,7 @@
             document.getElementById("progressBar").style.width = "0%";
             document.getElementById("logEntries").innerHTML = "";
 
-            addLogEntry("Starting build process...");
+            addLogEntry("Requesting build...");
 
             // Submit build job
             const response = await fetch(
@@ -142,7 +142,7 @@
 
             const data = await response.json();
             currentJobId = data.jobId;
-            addLogEntry(`Build job created with ID: ${currentJobId}`);
+            addLogEntry(`Initializing build for ID: ${currentJobId}`);
 
             // Connect to WebSocket
             connectWebSocket(data.socketUrl);
@@ -163,7 +163,6 @@
         }
 
         socket = new WebSocket(`ws://localhost:4000${socketUrl}`);
-        addLogEntry("Connecting to WebSocket...");
 
         socket.onopen = () => {
           addLogEntry("WebSocket connected!");
@@ -176,7 +175,7 @@
         };
 
         socket.onclose = () => {
-          addLogEntry("WebSocket disconnected");
+          addLogEntry("WebSocket disconnected!");
         };
 
         socket.onerror = (error) => {

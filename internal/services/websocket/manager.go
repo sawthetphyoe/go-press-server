@@ -65,32 +65,35 @@ func (sm *SocketManager) HandleConnection(w http.ResponseWriter, r *http.Request
 }
 
 func (sm *SocketManager) monitorJobProgress(jobID string, conn *websocket.Conn) {
-	var lastStatus job.JobStatus
-	var lastProgress int
-	var lastMessage string
+	buildJob, err := sm.jobQueue.GetJobStatus(jobID)
+	if err != nil {
+		sm.sendProgress(conn, jobID, string(job.StatusFailed), 0, fmt.Sprintf("Error: %v", err))
+		sm.cleanupConnection(jobID, conn)
+		return
+	}
 
+	// If job is already completed or failed, send final status and return
+	if buildJob.Status == job.StatusCompleted || buildJob.Status == job.StatusFailed {
+		sm.sendProgress(conn, jobID, string(buildJob.Status), buildJob.Progress, buildJob.Message)
+		sm.cleanupConnection(jobID, conn)
+		return
+	}
+
+	// Monitor progress updates
 	for {
-		buildJob, err := sm.jobQueue.GetJobStatus(jobID)
-		if err != nil {
-			sm.sendProgress(conn, jobID, string(job.StatusFailed), 0, fmt.Sprintf("Error: %v", err))
+		select {
+		case progress := <-buildJob.ProgressChan:
+			sm.sendProgress(conn, jobID, string(progress.Status), progress.Progress, progress.Message)
+
+			if progress.Status == job.StatusCompleted || progress.Status == job.StatusFailed {
+				sm.cleanupConnection(jobID, conn)
+				return
+			}
+		case <-time.After(30 * time.Second):
+			sm.sendProgress(conn, jobID, string(job.StatusFailed), 0, "Connection timeout")
+			sm.cleanupConnection(jobID, conn)
 			return
 		}
-
-		// Only send update if something has changed
-		if buildJob.Status != lastStatus || buildJob.Progress != lastProgress || buildJob.Message != lastMessage {
-			sm.sendProgress(conn, jobID, string(buildJob.Status), buildJob.Progress, buildJob.Message)
-
-			// Update last known values
-			lastStatus = buildJob.Status
-			lastProgress = buildJob.Progress
-			lastMessage = buildJob.Message
-		}
-
-		if buildJob.Status == job.StatusCompleted || buildJob.Status == job.StatusFailed {
-			return
-		}
-
-		time.Sleep(500 * time.Millisecond)
 	}
 }
 
@@ -110,6 +113,20 @@ func (sm *SocketManager) sendProgress(conn *websocket.Conn, jobID, status string
 	if err := conn.WriteJSON(msg); err != nil {
 		log.Printf("Error sending message: %v", err)
 	}
+}
+
+// cleanupConnection closes the WebSocket connection and removes it from the clients map
+func (sm *SocketManager) cleanupConnection(jobID string, conn *websocket.Conn) {
+	// Send close message
+	conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "Job completed"))
+
+	// Close the connection
+	conn.Close()
+
+	// Remove from clients map
+	sm.clientsMux.Lock()
+	delete(sm.clients, jobID)
+	sm.clientsMux.Unlock()
 }
 
 // Cleanup closes all active WebSocket connections
