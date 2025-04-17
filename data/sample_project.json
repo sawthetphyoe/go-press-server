@@ -1,4 +1,5 @@
 {
+  "id": "123",
   "name": "My Blog Site",
   "description": "A sample blog site generated using our static site generator",
   "components": [

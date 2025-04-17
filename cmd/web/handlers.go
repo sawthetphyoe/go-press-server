@@ -19,6 +19,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) submitBuildJob(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	projectID := params.ByName("id")
+
 	// For now, we'll use the sample project data
 	projectData, err := os.ReadFile("data/sample_project.json")
 	if err != nil {
@@ -32,8 +35,15 @@ func (app *application) submitBuildJob(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set the project ID from the URL parameter
+	project.ID = projectID
+
 	// Submit job to queue
 	jobID := app.jobQueue.SubmitJob(project)
+	if jobID == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
 
 	// Return job ID and WebSocket URL to client
 	response := struct {
@@ -66,15 +76,14 @@ func (app *application) downloadJobResult(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// Check if job directory exists
-	jobDir := filepath.Join("static", "sites", jobID)
-	if _, err := os.Stat(jobDir); os.IsNotExist(err) {
+	// Check if zip file exists
+	zipPath := filepath.Join("static", "sites", jobID+".zip")
+	if _, err := os.Stat(zipPath); os.IsNotExist(err) {
 		app.clientError(w, http.StatusGone)
 		return
 	}
 
 	// Serve zip file from disk
-	zipPath := filepath.Join(jobDir, "build.zip")
 	zipFile, err := os.Open(zipPath)
 	if err != nil {
 		app.serverError(w, err)

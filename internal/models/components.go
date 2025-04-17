@@ -36,6 +36,7 @@ type BlogPostComponent struct {
 
 // Project represents the entire project structure
 type Project struct {
+	ID          string      `json:"id"`
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
 	CSS         string      `json:"css,omitempty"`

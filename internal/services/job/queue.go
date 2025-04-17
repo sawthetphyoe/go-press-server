@@ -4,8 +4,6 @@ import (
 	"archive/zip"
 	"context"
 	"fmt"
-	"io"
-	"log"
 	"os"
 	"path/filepath"
 	"sync"
@@ -75,8 +73,32 @@ func NewJobQueue(workers int, infoLog, errorLog *utils.ColoredLogger) *JobQueue 
 }
 
 func (q *JobQueue) SubmitJob(project models.Project) string {
+	if project.ID == "" {
+		q.errorLog.Printf("Project ID is required")
+		return ""
+	}
+
+	// Check if job exists
+	q.jobsMux.Lock()
+	existingJob, exists := q.jobs[project.ID]
+	if exists {
+		// If job is running, return error
+		if existingJob.Status == StatusRunning {
+			q.jobsMux.Unlock()
+			q.errorLog.Printf("Project %s is already being built", project.ID)
+			return ""
+		}
+
+		// Clean up old job files if they exist
+		jobDir := filepath.Join("static", "sites", project.ID)
+		if err := os.RemoveAll(jobDir); err != nil {
+			q.errorLog.Printf("Failed to cleanup old job directory %s: %v", jobDir, err)
+		}
+	}
+	q.jobsMux.Unlock()
+
 	job := &BuildJob{
-		ID:        fmt.Sprintf("job-%d", time.Now().UnixNano()),
+		ID:        project.ID,
 		Project:   project,
 		Status:    StatusPending,
 		CreatedAt: time.Now(),
@@ -150,42 +172,15 @@ func (q *JobQueue) processJob(job *BuildJob) {
 		return
 	}
 
-	// Create base directories
-	baseDir := filepath.Join("static", "sites")
-	if err := os.MkdirAll(baseDir, 0755); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create directories: %v", err))
+	// Create sites directory if it doesn't exist
+	sitesDir := filepath.Join("static", "sites")
+	if err := os.MkdirAll(sitesDir, 0755); err != nil {
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create sites directory: %v", err))
 		return
 	}
 
-	// Create job-specific output directory
-	outputDir := filepath.Join(baseDir, job.ID)
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create output directory: %v", err))
-		return
-	}
-
-	// Write HTML file
-	htmlPath := filepath.Join(outputDir, "index.html")
-	if err := os.WriteFile(htmlPath, htmlContent, 0644); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write HTML file: %v", err))
-		return
-	}
-
-	// Create CSS directory and write CSS file
-	cssDir := filepath.Join(outputDir, "css")
-	if err := os.MkdirAll(cssDir, 0755); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create CSS directory: %v", err))
-		return
-	}
-
-	cssPath := filepath.Join(cssDir, "tailwind.css")
-	if err := os.WriteFile(cssPath, cssContent, 0644); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write CSS file: %v", err))
-		return
-	}
-
-	// Create zip file
-	zipPath := filepath.Join(outputDir, "build.zip")
+	// Create zip file directly in sites directory
+	zipPath := filepath.Join(sitesDir, job.ID+".zip")
 	zipFile, err := os.Create(zipPath)
 	if err != nil {
 		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create zip file: %v", err))
@@ -196,36 +191,29 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
 
-	// Add files to zip
-	files := []struct {
-		Name string
-		Path string
-	}{
-		{"index.html", htmlPath},
-		{"css/tailwind.css", cssPath},
+	// Add HTML file to zip
+	htmlWriter, err := zipWriter.Create("index.html")
+	if err != nil {
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create HTML entry in zip: %v", err))
+		return
+	}
+	if _, err := htmlWriter.Write(htmlContent); err != nil {
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write HTML to zip: %v", err))
+		return
 	}
 
-	for _, file := range files {
-		f, err := os.Open(file.Path)
-		if err != nil {
-			q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to open file for zip: %v", err))
-			return
-		}
-		defer f.Close()
-
-		zipEntry, err := zipWriter.Create(file.Name)
-		if err != nil {
-			q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create zip entry: %v", err))
-			return
-		}
-
-		if _, err := io.Copy(zipEntry, f); err != nil {
-			q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write to zip: %v", err))
-			return
-		}
+	// Add CSS directory and file to zip
+	cssWriter, err := zipWriter.Create("css/tailwind.css")
+	if err != nil {
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create CSS entry in zip: %v", err))
+		return
+	}
+	if _, err := cssWriter.Write(cssContent); err != nil {
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write CSS to zip: %v", err))
+		return
 	}
 
-	// Update job status without storing zip file in memory
+	// Update job status
 	q.updateJobStatus(job, StatusCompleted, 100, "Build completed successfully!")
 }
 
@@ -304,10 +292,10 @@ func (q *JobQueue) cleanupExpiredJobs() {
 			// Remove job from memory
 			delete(q.jobs, id)
 
-			// Remove job files from disk
-			jobDir := filepath.Join("static", "sites", id)
-			if err := os.RemoveAll(jobDir); err != nil {
-				q.errorLog.Printf("Failed to cleanup job directory %s: %v", jobDir, err)
+			// Remove zip file from disk
+			zipPath := filepath.Join("static", "sites", id+".zip")
+			if err := os.Remove(zipPath); err != nil {
+				q.errorLog.Printf("Failed to cleanup zip file %s: %v", zipPath, err)
 			}
 		}
 	}
@@ -318,12 +306,14 @@ func (q *JobQueue) CleanupAllJobs() {
 	// Stop the cleanup routine
 	q.cancel()
 
-	// Remove all job directories
-	baseDir := filepath.Join("static", "sites")
-	if err := os.RemoveAll(baseDir); err != nil {
-		log.Printf("Failed to cleanup all job directories: %v", err)
+	// Remove all zip files
+	sitesDir := filepath.Join("static", "sites")
+	if err := os.RemoveAll(sitesDir); err != nil {
+		q.errorLog.Printf("Failed to cleanup sites directory: %v", err)
 	}
 
 	// Clear all jobs from memory
+	q.jobsMux.Lock()
 	q.jobs = make(map[string]*BuildJob)
+	q.jobsMux.Unlock()
 }
