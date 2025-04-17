@@ -1,5 +1,5 @@
 {{define "footer"}}
-<footer class="{{range .ClassNames}}{{.}} {{end}}">
-    <p class="text-sm">&copy; {{.CompanyName}} {{now.Year}}</p>
+<footer class="{{(call .GetComponentConfig "footer").ClassNames}}">
+    <p>&copy; {{.Component.Content.companyName}}</p>
 </footer>
 {{end}} 

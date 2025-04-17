@@ -1,5 +1,5 @@
 {{define "header"}}
-<header class="{{range .ClassNames}}{{.}} {{end}}">
-    <h1 class="text-3xl font-bold">{{.Title}}</h1>
+<header class="{{(call .GetComponentConfig "header").ClassNames}}">
+    <h1>{{.Component.Content.title}}</h1>
 </header>
 {{end}} 

@@ -2,32 +2,82 @@
   "id": "123",
   "name": "My Blog Site",
   "description": "A sample blog site generated using our static site generator",
+  "config": {
+    "header": {
+      "classNames": "bg-blue-500 p-4 text-white px-16"
+    },
+    "main": {
+      "classNames": "flex-1 grid grid-cols-3 gap-4 p-4 px-16"
+    },
+    "blogPost": {
+      "classNames": "p-6 max-w-2xl mx-auto bg-white rounded-lg shadow-md"
+    },
+    "footer": {
+      "classNames": "bg-gray-800 text-white p-4 text-center"
+    }
+  },
   "components": [
     {
       "type": "header",
-      "classNames": ["bg-blue-500", "p-4", "text-white"],
-      "title": "My Awesome Blog"
+      "content": {
+        "title": "My Awesome Blog"
+      }
     },
     {
       "type": "blogPost",
-      "classNames": [
-        "p-6",
-        "max-w-2xl",
-        "mx-auto",
-        "bg-white",
-        "rounded-lg",
-        "shadow-md"
-      ],
-      "title": "Getting Started with Go",
-      "createdDate": "2024-04-15",
-      "author": "John Doe",
-      "readTime": "5 min read",
-      "content": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+      "content": {
+        "title": "Getting Started with Go",
+        "createdDate": "2024-04-15",
+        "author": "John Doe",
+        "readTime": "5 min read",
+        "content": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+      }
+    },
+    {
+      "type": "blogPost",
+      "content": {
+        "title": "Getting Started with Python",
+        "createdDate": "2024-04-16",
+        "author": "Jane Smith",
+        "readTime": "7 min read",
+        "content": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more."
+      }
+    },
+    {
+      "type": "blogPost",
+      "content": {
+        "title": "Getting Started with JavaScript",
+        "createdDate": "2024-04-17",
+        "author": "Alice Johnson",
+        "readTime": "8 min read",
+        "content": "JavaScript is a high-level, interpreted programming language used to create interactive web pages. It is the backbone of modern web development and is supported by all modern browsers."
+      }
+    },
+    {
+      "type": "blogPost",
+      "content": {
+        "title": "Getting Started with React",
+        "createdDate": "2024-04-18",
+        "author": "Bob Brown",
+        "readTime": "9 min read",
+        "content": "React is a JavaScript library for building user interfaces. It is used to create interactive web applications and is supported by all modern browsers."
+      }
+    },
+    {
+      "type": "blogPost",
+      "content": {
+        "title": "Getting Started with Vue.js",
+        "createdDate": "2024-04-19",
+        "author": "Charlie Davis",
+        "readTime": "10 min read",
+        "content": "Vue.js is a progressive JavaScript framework for building user interfaces. It is designed to be incrementally adoptable and is supported by all modern browsers."
+      }
     },
     {
       "type": "footer",
-      "classNames": ["bg-gray-800", "text-white", "p-4", "text-center"],
-      "companyName": "Tech Blog Inc."
+      "content": {
+        "companyName": "Tech Blog Inc."
+      }
     }
   ]
 }

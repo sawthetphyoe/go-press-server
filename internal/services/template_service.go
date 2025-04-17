@@ -2,9 +2,9 @@ package services
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"html/template"
-	"time"
+	"path/filepath"
 
 	"sawthet.go-press-server.net/internal/models"
 )
@@ -16,35 +16,65 @@ type TemplateService struct {
 
 // NewTemplateService creates a new template service
 func NewTemplateService() (*TemplateService, error) {
-	// Create a new template with our custom functions
-	tmpl := template.New("base").Funcs(template.FuncMap{
-		"now": func() time.Time { return time.Now() },
+	// Create a new template with custom functions
+	tmpl := template.New("").Funcs(template.FuncMap{
+		"dict": func(values ...any) (map[string]any, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("dict requires an even number of arguments")
+			}
+			dict := make(map[string]any, len(values)/2)
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
+		},
 	})
 
-	// Define the template files
-	templateFiles := []string{
-		"internal/templates/base.tmpl",
-		"internal/templates/header.tmpl",
-		"internal/templates/blog_post.tmpl",
-		"internal/templates/footer.tmpl",
-	}
-
-	// Parse all templates
-	tmpl, err := tmpl.ParseFiles(templateFiles...)
+	// Parse all template files
+	pattern := filepath.Join("internal", "templates", "*.tmpl")
+	templates, err := tmpl.ParseGlob(pattern)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing templates: %v", err)
+		return nil, err
 	}
 
 	return &TemplateService{
-		templates: tmpl,
+		templates: templates,
 	}, nil
 }
 
 // GenerateHTML generates HTML from the project data
 func (s *TemplateService) GenerateHTML(project models.Project) ([]byte, error) {
-	var buffer bytes.Buffer
-	if err := s.templates.ExecuteTemplate(&buffer, "base", project); err != nil {
-		return nil, fmt.Errorf("error executing template: %v", err)
+	// Create a buffer to write the output
+	var buf bytes.Buffer
+
+	// Execute the base template with the project data
+	err := s.templates.ExecuteTemplate(&buf, "base", struct {
+		models.Project
+		GetComponentConfig func(string) models.ComponentConfig
+	}{
+		Project: project,
+		GetComponentConfig: func(componentType string) models.ComponentConfig {
+			switch componentType {
+			case "header":
+				return project.Config.Header
+			case "blogPost":
+				return project.Config.BlogPost
+			case "footer":
+				return project.Config.Footer
+			case "main":
+				return project.Config.Main
+			default:
+				return models.ComponentConfig{}
+			}
+		},
+	})
+	if err != nil {
+		return nil, err
 	}
-	return buffer.Bytes(), nil
+
+	return buf.Bytes(), nil
 }

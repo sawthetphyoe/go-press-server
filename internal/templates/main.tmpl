@@ -1,0 +1,9 @@
+{{define "main"}}
+<main class="{{(call .GetComponentConfig "main").ClassNames}}">
+    {{range .Components}}
+        {{if eq .Type "blogPost"}}
+            {{template "blogPost" (dict "Component" . "GetComponentConfig" $.GetComponentConfig)}}
+        {{end}}
+    {{end}}
+</main>
+{{end}} 
