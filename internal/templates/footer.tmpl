@@ -1,5 +1,11 @@
 {{define "footer"}}
 <footer class="{{(call .GetComponentConfig "footer").ClassNames}}">
-    <p>&copy; {{.Component.Content.companyName}}</p>
+    <div class="container mx-auto">
+        {{range .Page.Components}}
+            {{if eq .Type "footer"}}
+                <p>&copy; {{.Content.companyName}} {{now}}</p>
+            {{end}}
+        {{end}}
+    </div>
 </footer>
 {{end}} 

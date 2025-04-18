@@ -1,5 +1,53 @@
 {{define "header"}}
 <header class="{{(call .GetComponentConfig "header").ClassNames}}">
-    <a href="index.html"><h1>{{.Component.Content.title}}</h1></a>
+    <div>
+        <div class="flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold hover:text-secondary transition-colors">
+                {{.Project.Name}}
+            </a>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    {{range .Project.Pages}}
+                        {{if ne .ID "blog-post"}}
+                            <li>
+                                <a href="{{if eq .ID "home"}}index.html{{else}}{{.ID}}.html{{end}}" 
+                                   class="text-gray-700 hover:text-secondary transition-colors {{if eq .ID $.Page.ID}}
+                                   text-secondary font-medium{{else}}text-white{{end}}">
+                                    {{.Name}}
+                                </a>
+                            </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+            </nav>
+            <button class="md:hidden" onclick="toggleMobileMenu()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="md:hidden hidden" id="mobileMenu">
+            <ul class="mt-4 space-y-2">
+                {{range .Project.Pages}}
+                    {{if ne .ID "blog-post"}}
+                        <li>
+                            <a href="{{if eq .ID "home"}}index.html{{else}}{{.ID}}.html{{end}}" 
+                               class="block text-gray-700 hover:text-secondary transition-colors {{if eq .ID $.Page.ID}}
+                               text-secondary font-medium{{else}}text-white{{end}}">
+                                {{.Name}}
+                            </a>
+                        </li>
+                    {{end}}
+                {{end}}
+            </ul>
+        </nav>
+    </div>
 </header>
+
+<script>
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenu.classList.toggle('hidden');
+    }
+</script>
 {{end}} 

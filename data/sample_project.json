@@ -2,157 +2,248 @@
   "id": "123",
   "name": "My Blog Site",
   "description": "A sample blog site generated using our static site generator",
-  "config": {
-    "header": {
-      "classNames": "bg-blue-500 p-4 text-white px-16"
-    },
-    "main": {
-      "classNames": "flex-1 grid grid-cols-3 gap-4 p-4 px-16"
-    },
-    "blogPost": {
-      "classNames": "p-6 max-w-2xl mx-auto bg-white rounded-lg shadow-md"
-    },
-    "footer": {
-      "classNames": "bg-gray-800 text-white p-4 text-center"
+  "globalConfig": {
+    "theme": {
+      "colors": {
+        "primary": "#3B82F6",
+        "secondary": "#1F2937",
+        "background": "#FFFFFF",
+        "text": "#1F2937"
+      },
+      "typography": {
+        "fontFamily": "Inter, sans-serif",
+        "fontSizes": {
+          "sm": "0.875rem",
+          "base": "1rem",
+          "lg": "1.125rem",
+          "xl": "1.25rem",
+          "2xl": "1.5rem"
+        }
+      },
+      "spacing": {
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem"
+      }
     }
   },
-  "components": [
+  "pages": [
     {
-      "type": "header",
-      "content": {
-        "title": "My Awesome Blog"
-      }
-    },
-    {
-      "type": "blogPost",
-      "content": {
-        "title": "Getting Started with Go",
-        "createdDate": "2024-04-15",
-        "author": "John Doe",
-        "readTime": "5 min read",
-        "preview": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
-        "content": [
-          {
-            "type": "paragraph",
-            "text": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson."
-          },
-          {
-            "type": "image",
-            "label": "Go Programming Language Logo",
-            "url": "https://dwglogo.com/wp-content/uploads/2017/08/Golang-logo-001.svg"
-          },
-          {
-            "type": "paragraph",
-            "text": "It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "layout": "default",
+      "config": {
+        "header": {
+          "classNames": "bg-primary p-4 text-white px-16"
+        },
+        "main": {
+          "classNames": "flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 px-16"
+        },
+        "footer": {
+          "classNames": "bg-secondary text-white p-4 text-center"
+        }
+      },
+      "components": [
+        {
+          "type": "header",
+          "content": {
+            "title": "My Awesome Blog"
           }
-        ]
-      }
-    },
-    {
-      "type": "blogPost",
-      "content": {
-        "title": "Getting Started with Python",
-        "createdDate": "2024-04-16",
-        "author": "Jane Smith",
-        "readTime": "7 min read",
-        "preview": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more.",
-        "content": [
-          {
-            "type": "paragraph",
-            "text": "Python is a high-level, interpreted programming language known for its clear syntax and readability."
-          },
-          {
-            "type": "image",
-            "label": "Python Programming Language Logo",
-            "url": "https://w0.peakpx.com/wallpaper/142/758/HD-wallpaper-python-logo-white-silk-texture-python-emblem-programming-language-python-silk-background.jpg"
-          },
-          {
-            "type": "paragraph",
-            "text": "It is widely used in web development, scientific computing, artificial intelligence, and more."
+        },
+        {
+          "type": "blogPostList",
+          "content": {}
+        },
+        {
+          "type": "footer",
+          "content": {
+            "companyName": "Tech Blog Inc."
           }
-        ]
-      }
+        }
+      ]
     },
     {
-      "type": "blogPost",
-      "content": {
-        "title": "Getting Started with JavaScript",
-        "createdDate": "2024-04-17",
-        "author": "Alice Johnson",
-        "readTime": "8 min read",
-        "preview": "JavaScript is a high-level, interpreted programming language used to create interactive web pages. It is the backbone of modern web development and is supported by all modern browsers.",
-        "content": [
-          {
-            "type": "paragraph",
-            "text": "JavaScript is a high-level, interpreted programming language used to create interactive web pages."
-          },
-          {
-            "type": "image",
-            "label": "JavaScript Programming Language Logo",
-            "url": "https://repository-images.githubusercontent.com/657736250/efe020c3-cfc2-41f9-be41-ad581ffc9969"
-          },
-          {
-            "type": "paragraph",
-            "text": "It is the backbone of modern web development and is supported by all modern browsers."
+      "id": "about",
+      "name": "About",
+      "path": "/about",
+      "layout": "default",
+      "config": {
+        "header": {
+          "classNames": "bg-primary p-4 text-white px-16"
+        },
+        "main": {
+          "classNames": "flex-1 max-w-4xl mx-auto p-8"
+        },
+        "footer": {
+          "classNames": "bg-secondary text-white p-4 text-center"
+        }
+      },
+      "components": [
+        {
+          "type": "header",
+          "content": {
+            "title": "About Us"
           }
-        ]
-      }
-    },
-    {
-      "type": "blogPost",
-      "content": {
-        "title": "Getting Started with React",
-        "createdDate": "2024-04-18",
-        "author": "Bob Brown",
-        "readTime": "9 min read",
-        "preview": "React is a JavaScript library for building user interfaces. It is used to create interactive web applications and is supported by all modern browsers.",
-        "content": [
-          {
-            "type": "paragraph",
-            "text": "React is a JavaScript library for building user interfaces."
-          },
-          {
-            "type": "image",
-            "label": "React Framework Logo",
-            "url": "https://www.patterns.dev/img/reactjs/react-logo@3x.svg"
-          },
-          {
-            "type": "paragraph",
-            "text": "It is used to create interactive web applications and is supported by all modern browsers."
+        },
+        {
+          "type": "paragraph",
+          "text": "We are a team of passionate developers..."
+        },
+        {
+          "type": "image",
+          "url": "https://static.vecteezy.com/system/resources/previews/011/299/670/non_2x/businessman-and-company-staff-posing-character-3d-character-illustration-png.png",
+          "label": "Our Team"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        },
+        {
+          "type": "footer",
+          "content": {
+            "companyName": "Tech Blog Inc."
           }
-        ]
-      }
+        }
+      ]
     },
     {
-      "type": "blogPost",
-      "content": {
-        "title": "Getting Started with Vue.js",
-        "createdDate": "2024-04-19",
-        "author": "Charlie Davis",
-        "readTime": "10 min read",
-        "preview": "Vue.js is a progressive JavaScript framework for building user interfaces. It is designed to be incrementally adoptable and is supported by all modern browsers.",
-        "content": [
-          {
-            "type": "paragraph",
-            "text": "Vue.js is a progressive JavaScript framework for building user interfaces."
-          },
-          {
-            "type": "image",
-            "label": "Vue.js Framework Logo",
-            "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn2dYJRX3tJNkUVf4CwDaM3EWHVf7ihd8VVw&s"
-          },
-          {
-            "type": "paragraph",
-            "text": "It is designed to be incrementally adoptable and is supported by all modern browsers."
+      "id": "blog-post",
+      "name": "Blog Post",
+      "path": "/blog",
+      "layout": "default",
+      "config": {
+        "header": {
+          "classNames": "bg-primary p-4 text-white px-16"
+        },
+        "main": {
+          "classNames": "flex-1 max-w-4xl mx-auto p-8"
+        },
+        "footer": {
+          "classNames": "bg-secondary text-white p-4 text-center"
+        }
+      },
+      "components": [
+        {
+          "type": "header",
+          "content": {
+            "title": "Blog Post"
           }
-        ]
-      }
+        },
+        {
+          "type": "blogPost",
+          "content": {}
+        },
+        {
+          "type": "footer",
+          "content": {
+            "companyName": "Tech Blog Inc."
+          }
+        }
+      ]
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": "go-post",
+      "title": "Getting Started with Go",
+      "createdDate": "2024-04-15",
+      "author": "John Doe",
+      "readTime": "5 min read",
+      "preview": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+        },
+        {
+          "type": "image",
+          "label": "Go Programming Language Logo",
+          "url": "https://dwglogo.com/wp-content/uploads/2017/08/Golang-logo-001.svg"
+        },
+        {
+          "type": "paragraph",
+          "text": "It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+        },
+        {
+          "type": "paragraph",
+          "text": "It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+        }
+      ]
     },
     {
-      "type": "footer",
-      "content": {
-        "companyName": "Tech Blog Inc."
-      }
+      "id": "python-post",
+      "title": "Getting Started with Python",
+      "createdDate": "2024-04-16",
+      "author": "Jane Smith",
+      "readTime": "7 min read",
+      "preview": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more.",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more."
+        },
+        {
+          "type": "image",
+          "label": "Python Programming Language Logo",
+          "url": "https://w0.peakpx.com/wallpaper/142/758/HD-wallpaper-python-logo-white-silk-texture-python-emblem-programming-language-python-silk-background.jpg"
+        },
+        {
+          "type": "paragraph",
+          "text": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more. It is widely used in web development, scientific computing, artificial intelligence, and more. It is widely used in web development, scientific computing, artificial intelligence, and more."
+        },
+        {
+          "type": "paragraph",
+          "text": "Areas of application are Artificial intelligence, scientific computing, web development, data analysis, and more. But it is also used in many other areas. "
+        }
+      ]
+    },
+    {
+      "id": "javascript-post",
+      "title": "Getting Started with JavaScript",
+      "createdDate": "2024-04-17",
+      "author": "John Doe",
+      "readTime": "10 min read",
+      "preview": "JavaScript is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more.",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "JavaScript is a high-level, interpreted programming language used to create interactive web pages."
+        },
+        {
+          "type": "image",
+          "label": "JavaScript Programming Language Logo",
+          "url": "https://repository-images.githubusercontent.com/657736250/efe020c3-cfc2-41f9-be41-ad581ffc9969"
+        },
+        {
+          "type": "paragraph",
+          "text": "It is the backbone of modern web development and is supported by all modern browsers."
+        }
+      ]
+    },
+    {
+      "id": "react-post",
+      "title": "Getting Started with React",
+      "createdDate": "2024-04-18",
+      "author": "Jane Smith",
+      "readTime": "12 min read",
+      "preview": "React is a high-level, declarative, and efficient JavaScript library for building user interfaces. It is widely used in web development, scientific computing, artificial intelligence, and more.",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "React is a JavaScript library for building user interfaces."
+        },
+        {
+          "type": "image",
+          "label": "React Framework Logo",
+          "url": "https://www.patterns.dev/img/reactjs/react-logo@3x.svg"
+        },
+        {
+          "type": "paragraph",
+          "text": "It is used to create interactive web applications and is supported by all modern browsers."
+        }
+      ]
     }
   ]
 }

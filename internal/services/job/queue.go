@@ -169,7 +169,7 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	// Generate HTML
 	q.updateJobStatus(job, StatusRunning, 25, "Starting HTML generation...")
 	htmlFiles, err := templateService.GenerateHTML(job.Project, func(progress int, message string) {
-		q.updateJobStatus(job, StatusRunning, progress, message)
+		q.updateJobStatus(job, StatusRunning, 25+progress/2, message)
 	})
 	if err != nil {
 		q.updateJobStatus(job, StatusFailed, 25, fmt.Sprintf("Failed to generate HTML: %v", err))
@@ -177,7 +177,7 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	}
 
 	// Compile CSS
-	q.updateJobStatus(job, StatusRunning, 50, "Compiling CSS...")
+	q.updateJobStatus(job, StatusRunning, 75, "Compiling CSS...")
 
 	// Combine all HTML content for CSS compilation
 	var combinedHTML []byte
@@ -185,9 +185,10 @@ func (q *JobQueue) processJob(job *BuildJob) {
 		combinedHTML = append(combinedHTML, content...)
 	}
 
-	cssContent, err := cssCompiler.Compile(combinedHTML)
+	// Compile minified CSS
+	cssContent, err := cssCompiler.Compile(combinedHTML, job.Project)
 	if err != nil {
-		q.updateJobStatus(job, StatusFailed, 50, fmt.Sprintf("Failed to compile CSS: %v", err))
+		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to compile CSS: %v", err))
 		return
 	}
 
@@ -224,7 +225,7 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	}
 
 	// Add CSS directory and file to zip
-	cssWriter, err := zipWriter.Create("css/tailwind.css")
+	cssWriter, err := zipWriter.Create("css/styles.css")
 	if err != nil {
 		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create CSS entry in zip: %v", err))
 		return

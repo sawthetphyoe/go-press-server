@@ -1,25 +1,29 @@
 {{define "blogPost"}}
-<article class="{{(call .GetComponentConfig "blogPost").ClassNames}}">
-    {{if .Component.Content.imageUrl}}
-    <img src="{{.Component.Content.imageUrl}}" alt="{{.Component.Content.title}}" class="w-full h-64 object-cover rounded-t-lg">
-    {{end}}
-    <div class="p-6">
-        <h2 class="text-2xl font-bold mb-2">
-            <a href="{{.Component.Content.title | urlize}}.html" class="hover:text-blue-600 transition-colors">
-                {{.Component.Content.title}}
-            </a>
-        </h2>
-        <div class="text-gray-600 text-sm mb-4">
-            <span>{{.Component.Content.createdDate}}</span>
-            {{if .Component.Content.author}}<span class="mx-2">•</span><span>{{.Component.Content.author}}</span>{{end}}
-            {{if .Component.Content.readTime}}<span class="mx-2">•</span><span>{{.Component.Content.readTime}}</span>{{end}}
+{{if .BlogPost}}
+<article class="max-w-4xl mx-auto">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold mb-4">{{.BlogPost.Title}}</h1>
+        <div class="text-sm text-gray-600 mb-4">
+            <span>{{.BlogPost.Author}}</span> • 
+            <span>{{formatDate .BlogPost.CreatedDate}}</span> • 
+            <span>{{.BlogPost.ReadTime}}</span>
         </div>
-        <div class="prose">
-            {{.Component.Content.preview}}
-        </div>
-        <a href="{{.Component.Content.title | urlize}}.html" class="inline-block mt-4 text-blue-600 hover:text-blue-800">
-            Read more →
-        </a>
+    </header>
+
+    <div class="prose max-w-none">
+        {{range .BlogPost.Content}}
+            {{if eq .Type "paragraph"}}
+                <p>{{.Text}}</p>
+            {{else if eq .Type "image"}}
+                <figure class="my-8">
+                    <img src="{{.URL}}" alt="{{.Label}}" class="rounded-lg shadow-md">
+                    {{if .Label}}
+                        <figcaption class="text-sm text-gray-600 mt-2 text-center">{{.Label}}</figcaption>
+                    {{end}}
+                </figure>
+            {{end}}
+        {{end}}
     </div>
 </article>
+{{end}}
 {{end}} 
