@@ -113,7 +113,7 @@ func (app *application) checkJobAvailability(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Check if job directory exists
-	jobDir := filepath.Join("static", "sites", jobID)
+	jobDir := filepath.Join("static", "sites", jobID+".zip")
 	_, dirErr := os.Stat(jobDir)
 
 	response := struct {

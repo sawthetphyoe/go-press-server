@@ -7,14 +7,18 @@
     <title>{{.Name}}</title>
     <link href="css/tailwind.css" rel="stylesheet">
 </head>
-<body class="h-screen w-screen flex flex-col">
+<body class="h-screen w-full flex flex-col">
     {{range .Components}}
         {{if eq .Type "header"}}
             {{template "header" (dict "Component" . "GetComponentConfig" $.GetComponentConfig)}}
         {{end}}
     {{end}}
 
-    {{template "main" (dict "Components" .Components "GetComponentConfig" $.GetComponentConfig "Component" (dict "Type" "main"))}}
+    {{if .BlogPost}}
+        {{template "blogPage" (dict "Component" .BlogPost "GetComponentConfig" $.GetComponentConfig)}}
+    {{else}}
+        {{template "main" (dict "Components" .Components "GetComponentConfig" $.GetComponentConfig "Component" (dict "Type" "main"))}}
+    {{end}}
 
     {{range .Components}}
         {{if eq .Type "footer"}}

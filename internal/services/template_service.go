@@ -3,8 +3,10 @@ package services
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"html/template"
 	"path/filepath"
+	"strings"
 
 	"sawthet.go-press-server.net/internal/models"
 )
@@ -32,6 +34,9 @@ func NewTemplateService() (*TemplateService, error) {
 			}
 			return dict, nil
 		},
+		"urlize": func(s string) string {
+			return strings.ToLower(strings.ReplaceAll(s, " ", "-"))
+		},
 	})
 
 	// Parse all template files
@@ -47,14 +52,17 @@ func NewTemplateService() (*TemplateService, error) {
 }
 
 // GenerateHTML generates HTML from the project data
-func (s *TemplateService) GenerateHTML(project models.Project) ([]byte, error) {
-	// Create a buffer to write the output
-	var buf bytes.Buffer
+func (s *TemplateService) GenerateHTML(project models.Project, updateProgress func(int, string)) (map[string][]byte, error) {
+	// Create a map to store all HTML files
+	htmlFiles := make(map[string][]byte)
 
-	// Execute the base template with the project data
-	err := s.templates.ExecuteTemplate(&buf, "base", struct {
+	// Generate index.html
+	updateProgress(25, "Generating index.html...")
+	var indexBuf bytes.Buffer
+	err := s.templates.ExecuteTemplate(&indexBuf, "base", struct {
 		models.Project
 		GetComponentConfig func(string) models.ComponentConfig
+		BlogPost           *models.Component
 	}{
 		Project: project,
 		GetComponentConfig: func(componentType string) models.ComponentConfig {
@@ -71,10 +79,64 @@ func (s *TemplateService) GenerateHTML(project models.Project) ([]byte, error) {
 				return models.ComponentConfig{}
 			}
 		},
+		BlogPost: nil,
 	})
 	if err != nil {
 		return nil, err
 	}
+	htmlFiles["index.html"] = indexBuf.Bytes()
 
-	return buf.Bytes(), nil
+	// Generate individual blog post pages
+	totalPosts := 0
+	for _, component := range project.Components {
+		if component.Type == "blogPost" {
+			totalPosts++
+		}
+	}
+
+	currentPost := 0
+	for _, component := range project.Components {
+		if component.Type == "blogPost" {
+			currentPost++
+			progress := 25 + (currentPost * 25 / totalPosts)
+			updateProgress(progress, fmt.Sprintf("Generating blog page %d of %d...", currentPost, totalPosts))
+
+			// Create a buffer for the blog post page
+			var blogBuf bytes.Buffer
+
+			// Execute the base template with the blog post data
+			err := s.templates.ExecuteTemplate(&blogBuf, "base", struct {
+				models.Project
+				GetComponentConfig func(string) models.ComponentConfig
+				BlogPost           models.Component
+			}{
+				Project: project,
+				GetComponentConfig: func(componentType string) models.ComponentConfig {
+					switch componentType {
+					case "header":
+						return project.Config.Header
+					case "blogPost":
+						return project.Config.BlogPost
+					case "footer":
+						return project.Config.Footer
+					case "main":
+						return project.Config.Main
+					default:
+						return models.ComponentConfig{}
+					}
+				},
+				BlogPost: component,
+			})
+			if err != nil {
+				return nil, err
+			}
+
+			// Generate a URL-friendly filename from the title
+			title := component.Content["title"].(string)
+			filename := strings.ToLower(strings.ReplaceAll(title, " ", "-")) + ".html"
+			htmlFiles[filename] = blogBuf.Bytes()
+		}
+	}
+
+	return htmlFiles, nil
 }

@@ -30,7 +30,22 @@
         "createdDate": "2024-04-15",
         "author": "John Doe",
         "readTime": "5 min read",
-        "content": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+        "preview": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Go is a statically typed, compiled programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson."
+          },
+          {
+            "type": "image",
+            "label": "Go Programming Language Logo",
+            "url": "https://dwglogo.com/wp-content/uploads/2017/08/Golang-logo-001.svg"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+          }
+        ]
       }
     },
     {
@@ -40,7 +55,22 @@
         "createdDate": "2024-04-16",
         "author": "Jane Smith",
         "readTime": "7 min read",
-        "content": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more."
+        "preview": "Python is a high-level, interpreted programming language known for its clear syntax and readability. It is widely used in web development, scientific computing, artificial intelligence, and more.",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Python is a high-level, interpreted programming language known for its clear syntax and readability."
+          },
+          {
+            "type": "image",
+            "label": "Python Programming Language Logo",
+            "url": "https://w0.peakpx.com/wallpaper/142/758/HD-wallpaper-python-logo-white-silk-texture-python-emblem-programming-language-python-silk-background.jpg"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is widely used in web development, scientific computing, artificial intelligence, and more."
+          }
+        ]
       }
     },
     {
@@ -50,7 +80,22 @@
         "createdDate": "2024-04-17",
         "author": "Alice Johnson",
         "readTime": "8 min read",
-        "content": "JavaScript is a high-level, interpreted programming language used to create interactive web pages. It is the backbone of modern web development and is supported by all modern browsers."
+        "preview": "JavaScript is a high-level, interpreted programming language used to create interactive web pages. It is the backbone of modern web development and is supported by all modern browsers.",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "JavaScript is a high-level, interpreted programming language used to create interactive web pages."
+          },
+          {
+            "type": "image",
+            "label": "JavaScript Programming Language Logo",
+            "url": "https://repository-images.githubusercontent.com/657736250/efe020c3-cfc2-41f9-be41-ad581ffc9969"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is the backbone of modern web development and is supported by all modern browsers."
+          }
+        ]
       }
     },
     {
@@ -60,7 +105,22 @@
         "createdDate": "2024-04-18",
         "author": "Bob Brown",
         "readTime": "9 min read",
-        "content": "React is a JavaScript library for building user interfaces. It is used to create interactive web applications and is supported by all modern browsers."
+        "preview": "React is a JavaScript library for building user interfaces. It is used to create interactive web applications and is supported by all modern browsers.",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "React is a JavaScript library for building user interfaces."
+          },
+          {
+            "type": "image",
+            "label": "React Framework Logo",
+            "url": "https://www.patterns.dev/img/reactjs/react-logo@3x.svg"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is used to create interactive web applications and is supported by all modern browsers."
+          }
+        ]
       }
     },
     {
@@ -70,7 +130,22 @@
         "createdDate": "2024-04-19",
         "author": "Charlie Davis",
         "readTime": "10 min read",
-        "content": "Vue.js is a progressive JavaScript framework for building user interfaces. It is designed to be incrementally adoptable and is supported by all modern browsers."
+        "preview": "Vue.js is a progressive JavaScript framework for building user interfaces. It is designed to be incrementally adoptable and is supported by all modern browsers.",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Vue.js is a progressive JavaScript framework for building user interfaces."
+          },
+          {
+            "type": "image",
+            "label": "Vue.js Framework Logo",
+            "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn2dYJRX3tJNkUVf4CwDaM3EWHVf7ihd8VVw&s"
+          },
+          {
+            "type": "paragraph",
+            "text": "It is designed to be incrementally adoptable and is supported by all modern browsers."
+          }
+        ]
       }
     },
     {

@@ -53,15 +53,6 @@
         background-color: #cccccc;
         cursor: not-allowed;
       }
-      .download-section {
-        margin-top: 20px;
-        padding: 10px;
-        border: 1px dashed #ccc;
-        border-radius: 4px;
-      }
-      .download-section.hidden {
-        display: none;
-      }
       .log-section {
         margin-top: 20px;
         padding: 10px;
@@ -90,11 +81,6 @@
       <div class="message" id="statusMessage">Ready to start build...</div>
     </div>
 
-    <div class="download-section hidden" id="downloadSection">
-      <h3>Generated Files</h3>
-      <button id="downloadResult">Download Result</button>
-    </div>
-
     <div class="log-section">
       <h3>Build Log</h3>
       <div id="logEntries"></div>
@@ -119,7 +105,6 @@
           try {
             // Reset state
             document.getElementById("startBuild").disabled = true;
-            document.getElementById("downloadSection").classList.add("hidden");
             document
               .getElementById("statusMessage")
               .classList.remove("error", "success");
@@ -195,23 +180,78 @@
 
         if (data.status === "completed") {
           document.getElementById("statusMessage").classList.add("success");
-          document.getElementById("startBuild").disabled = false;
-          document.getElementById("downloadSection").classList.remove("hidden");
+          // Replace start build button with download button
+          const startBuildBtn = document.getElementById("startBuild");
+          const downloadBtn = document.createElement("button");
+          downloadBtn.id = "downloadResult";
+          downloadBtn.textContent = "Download Result";
+          downloadBtn.addEventListener("click", async () => {
+            if (currentJobId) {
+              try {
+                addLogEntry("Checking build availability...");
+                const response = await fetch(
+                  `http://localhost:4000/jobs/${currentJobId}/check`
+                );
+                if (!response.ok) {
+                  throw new Error("Failed to check build availability");
+                }
+
+                const data = await response.json();
+                if (
+                  data.exists &&
+                  data.status === "completed" &&
+                  data.folderExists
+                ) {
+                  window.location.href = `http://localhost:4000/jobs/${currentJobId}/download`;
+                  addLogEntry("Downloading build result...");
+                } else {
+                  const errorMsg =
+                    "Build is no longer available. Please start a new build.";
+                  // Reset progress bar
+                  document.getElementById("progressBar").style.width = "0%";
+                  // Show error message
+                  document.getElementById("statusMessage").textContent =
+                    errorMsg;
+                  document
+                    .getElementById("statusMessage")
+                    .classList.add("error");
+                  document.getElementById("statusMessage").style.color =
+                    "#f44336"; // Red color
+                  addLogEntry(errorMsg);
+
+                  // Replace download button with start build button
+                  const newStartBuildBtn = document.createElement("button");
+                  newStartBuildBtn.id = "startBuild";
+                  newStartBuildBtn.textContent = "Start Build";
+                  newStartBuildBtn.addEventListener("click", () => {
+                    document.getElementById("startBuild").click();
+                  });
+                  downloadBtn.parentNode.replaceChild(
+                    newStartBuildBtn,
+                    downloadBtn
+                  );
+                }
+              } catch (error) {
+                console.error("Error:", error);
+                // Reset progress bar
+                document.getElementById("progressBar").style.width = "0%";
+                // Show error message
+                document.getElementById(
+                  "statusMessage"
+                ).textContent = `Error: ${error.message}`;
+                document.getElementById("statusMessage").classList.add("error");
+                document.getElementById("statusMessage").style.color =
+                  "#f44336"; // Red color
+                addLogEntry(`Error: ${error.message}`);
+              }
+            }
+          });
+          startBuildBtn.parentNode.replaceChild(downloadBtn, startBuildBtn);
         } else if (data.status === "failed") {
           document.getElementById("statusMessage").classList.add("error");
           document.getElementById("startBuild").disabled = false;
         }
       }
-
-      // Download handler
-      document
-        .getElementById("downloadResult")
-        .addEventListener("click", () => {
-          if (currentJobId) {
-            window.location.href = `http://localhost:4000/jobs/${currentJobId}/download`;
-            addLogEntry("Downloading build result...");
-          }
-        });
     </script>
   </body>
 </html>

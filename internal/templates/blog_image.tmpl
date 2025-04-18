@@ -1,0 +1,8 @@
+{{define "blogImage"}}
+<figure class="my-6">
+    <img src="{{.url}}" alt="{{.label}}" class="!w-full rounded-lg shadow-md">
+    {{if .label}}
+    <figcaption class="text-center text-sm text-gray-600 mt-2">{{.label}}</figcaption>
+    {{end}}
+</figure>
+{{end}} 

@@ -167,8 +167,10 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	defer cssCompiler.Cleanup()
 
 	// Generate HTML
-	q.updateJobStatus(job, StatusRunning, 25, "Generating HTML...")
-	htmlContent, err := templateService.GenerateHTML(job.Project)
+	q.updateJobStatus(job, StatusRunning, 25, "Starting HTML generation...")
+	htmlFiles, err := templateService.GenerateHTML(job.Project, func(progress int, message string) {
+		q.updateJobStatus(job, StatusRunning, progress, message)
+	})
 	if err != nil {
 		q.updateJobStatus(job, StatusFailed, 25, fmt.Sprintf("Failed to generate HTML: %v", err))
 		return
@@ -176,7 +178,14 @@ func (q *JobQueue) processJob(job *BuildJob) {
 
 	// Compile CSS
 	q.updateJobStatus(job, StatusRunning, 50, "Compiling CSS...")
-	cssContent, err := cssCompiler.Compile(htmlContent)
+
+	// Combine all HTML content for CSS compilation
+	var combinedHTML []byte
+	for _, content := range htmlFiles {
+		combinedHTML = append(combinedHTML, content...)
+	}
+
+	cssContent, err := cssCompiler.Compile(combinedHTML)
 	if err != nil {
 		q.updateJobStatus(job, StatusFailed, 50, fmt.Sprintf("Failed to compile CSS: %v", err))
 		return
@@ -201,15 +210,17 @@ func (q *JobQueue) processJob(job *BuildJob) {
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
 
-	// Add HTML file to zip
-	htmlWriter, err := zipWriter.Create("index.html")
-	if err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create HTML entry in zip: %v", err))
-		return
-	}
-	if _, err := htmlWriter.Write(htmlContent); err != nil {
-		q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write HTML to zip: %v", err))
-		return
+	// Add all HTML files to zip
+	for filename, content := range htmlFiles {
+		htmlWriter, err := zipWriter.Create(filename)
+		if err != nil {
+			q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to create HTML entry in zip: %v", err))
+			return
+		}
+		if _, err := htmlWriter.Write(content); err != nil {
+			q.updateJobStatus(job, StatusFailed, 75, fmt.Sprintf("Failed to write HTML to zip: %v", err))
+			return
+		}
 	}
 
 	// Add CSS directory and file to zip
