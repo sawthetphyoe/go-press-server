@@ -1,0 +1,26 @@
+{{define "layouts/default"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Page.Title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-{{.Project.GlobalConfig.Theme.Colors.Background}} text-{{.Project.GlobalConfig.Theme.Colors.Text}} min-h-screen">
+{{- $page := .Page -}}
+{{- $project := .Project -}}
+{{- $context := dict "Page" $page "Project" $project}}
+ {{template "organisms/header" $context}} 
+    
+   <main>
+        {{range .Page.Components}}
+        {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project}}
+            {{template "render" $renderContext}}
+        {{end}}
+    </main>
+
+    {{template "organisms/footer" $context}}
+</body>
+</html>
+{{end}} 

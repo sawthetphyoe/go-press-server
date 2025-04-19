@@ -1,0 +1,18 @@
+{{define "atoms/text"}}
+{{ $page := .Page }}
+{{ $project := .Project }}
+ {{with .Component}}
+    {{- $tag := or .Variant "p" -}}
+    {{- $classes := or .ClassNames "" -}}
+    {{printf "<%s class=\"%s\">" $tag $classes | safeHTML}}
+        {{if .Content}}
+            {{.Content}}
+        {{else if .Children}}
+            {{range .Children}}
+                {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project -}}
+                {{template "render" $renderContext}}
+            {{end}}
+        {{end}}
+    {{printf "</%s>" $tag | safeHTML}}
+{{end}} 
+{{end}} 

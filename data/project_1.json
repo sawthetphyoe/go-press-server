@@ -1,0 +1,1596 @@
+{
+  "id": "project-1",
+  "name": "Project 1",
+  "description": "Project 1 description",
+  "keywords": "project 1, description",
+  "globalConfig": {
+    "theme": {
+      "colors": {
+        "primary": "#3B82F6",
+        "secondary": "#1F2937",
+        "background": "#FFFFFF",
+        "text": "#1F2937"
+      },
+      "typography": {
+        "fontFamily": "Inter, sans-serif",
+        "fontSizes": {
+          "sm": "0.875rem",
+          "base": "1rem",
+          "lg": "1.125rem",
+          "xl": "1.25rem",
+          "2xl": "1.5rem"
+        }
+      },
+      "spacing": {
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem"
+      }
+    }
+  },
+  "header": {
+    "type": "header",
+    "id": "main-header",
+    "classNames": "bg-blue-500 shadow-sm sticky top-0 z-50 mx-auto",
+    "children": [
+      {
+        "type": "block",
+        "classNames": "px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto",
+        "children": [
+          {
+            "type": "block",
+            "classNames": "flex justify-between h-16",
+            "children": [
+              {
+                "type": "block",
+                "classNames": "flex justify-between w-full",
+                "children": [
+                  {
+                    "type": "block",
+                    "classNames": "flex-shrink-0 flex items-center",
+                    "children": [
+                      {
+                        "type": "link",
+                        "href": "./index.html",
+                        "classNames": "flex items-center",
+                        "children": [
+                          {
+                            "type": "image",
+                            "src": "https://picsum.photos/200/300",
+                            "alt": "Company Logo",
+                            "classNames": "size-8 rounded-full object-cover"
+                          },
+                          {
+                            "type": "text",
+                            "variant": "span",
+                            "classNames": "ml-4 text-xl font-bold text-slate-100",
+                            "content": "Tech Blog"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "block",
+                    "classNames": "hidden sm:ml-6 sm:flex sm:space-x-8",
+                    "children": [
+                      {
+                        "id": "home",
+                        "type": "link",
+                        "href": "./index.html",
+                        "classNames": "border-transparent text-white hover:border-gray-300 hover:text-gray-500 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
+                        "content": "Home"
+                      },
+                      {
+                        "id": "about",
+                        "type": "link",
+                        "href": "./about.html",
+                        "classNames": "border-transparent text-white hover:border-gray-300 hover:text-gray-500 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
+                        "content": "About"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "footer",
+    "id": "main-footer",
+    "classNames": "bg-gray-100 py-8",
+    "children": []
+  },
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "slug": "/",
+      "description": "Home page",
+      "keywords": "home, page",
+      "layout": "default",
+      "components": [
+        {
+          "type": "block",
+          "classNames": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12",
+          "children": [
+            {
+              "type": "text",
+              "variant": "h1",
+              "classNames": "text-4xl font-bold text-gray-900 mb-8",
+              "content": "Latest Articles"
+            },
+            {
+              "type": "block",
+              "classNames": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
+              "children": [
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/400",
+                      "alt": "Web development trends",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-1.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "The Future of Web Development: Trends to Watch in 2024"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "The web development landscape is evolving at an unprecedented pace. As we move through 2024, several key trends are shaping the future of how we build and interact with web applications."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "March 15, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "8 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/401",
+                      "alt": "AI in software development",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-2.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "The Rise of AI in Software Development"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "Exploring how artificial intelligence is transforming the way we write, test, and deploy software in 2024."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "March 20, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "10 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/402",
+                      "alt": "Go microservices",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-3.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "Building Scalable Microservices with Go"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "A comprehensive guide to building robust and scalable microservices architecture using the Go programming language."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "March 25, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "12 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/403",
+                      "alt": "Web3 development",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-4.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "The Future of Web3 Development"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "Exploring the next generation of web development with Web3 technologies and decentralized applications."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "March 28, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "15 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/404",
+                      "alt": "React 19",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-5.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "Modern Frontend Development with React 19"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "Discover the latest features and best practices in React 19 for building modern, performant web applications."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "April 1, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "8 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://picsum.photos/800/405",
+                      "alt": "DevOps practices",
+                      "classNames": "w-full h-48 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "link",
+                          "href": "./article-6.html",
+                          "classNames": "text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200",
+                          "content": "DevOps Best Practices for 2024"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "mt-2 text-gray-600",
+                          "content": "Essential DevOps practices and tools for modern software development teams in 2024."
+                        },
+                        {
+                          "type": "block",
+                          "classNames": "mt-4 flex items-center text-sm text-gray-500",
+                          "children": [
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "April 5, 2024"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "classNames": "mx-2",
+                              "content": "•"
+                            },
+                            {
+                              "type": "text",
+                              "variant": "span",
+                              "content": "14 min read"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-1",
+      "name": "The Future of Web Development: Trends to Watch in 2024",
+      "path": "/article-1",
+      "slug": "/article-1",
+      "description": "The Future of Web Development: Trends to Watch in 2024",
+      "keywords": "web development, trends, 2024",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-1",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "The Future of Web Development: Trends to Watch in 2024"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "Sarah Johnson"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "March 15, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "8 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/200/300",
+                  "alt": "Web development illustration",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg",
+                  "width": "1200",
+                  "height": "600"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "The web development landscape is evolving at an unprecedented pace. As we move through 2024, several key trends are shaping the future of how we build and interact with web applications."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "1. AI-Powered Development"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Artificial Intelligence is revolutionizing how developers write code. From intelligent code completion to automated testing, AI tools are becoming indispensable in the modern developer's toolkit."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Start experimenting with AI coding assistants to boost your productivity and learn new patterns."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "2. WebAssembly and Performance"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "WebAssembly continues to gain traction, enabling near-native performance for web applications. This technology is particularly impactful for graphics-intensive applications and games."
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mt-12 pt-8 border-t",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h3",
+                  "classNames": "text-2xl font-bold mb-6",
+                  "content": "Related Articles"
+                },
+                {
+                  "type": "block",
+                  "classNames": "grid grid-cols-1 md:grid-cols-2 gap-6",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+                          "alt": "Related article thumbnail",
+                          "classNames": "w-full h-48 object-cover rounded-lg mb-4"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "h4",
+                          "classNames": "text-xl font-semibold mb-2",
+                          "content": "The Rise of Edge Computing"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-gray-600",
+                          "content": "How edge computing is changing the way we think about web architecture."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
+                          "alt": "Related article thumbnail",
+                          "classNames": "w-full h-48 object-cover rounded-lg mb-4"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "h4",
+                          "classNames": "text-xl font-semibold mb-2",
+                          "content": "Progressive Web Apps in 2024"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-gray-600",
+                          "content": "The latest developments in PWA technology and best practices."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mt-12 pt-8 border-t",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h3",
+                  "classNames": "text-2xl font-bold mb-6",
+                  "content": "Join the Discussion"
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-gray-50 p-6 rounded-lg",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "mb-4",
+                      "content": "What trends are you most excited about? Share your thoughts in the comments below."
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "flex flex-col gap-4",
+                      "children": [
+                        {
+                          "type": "input",
+                          "variant": "text",
+                          "name": "name",
+                          "id": "name",
+                          "classNames": "px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                          "placeholder": "Your name"
+                        },
+                        {
+                          "type": "textarea",
+                          "name": "comment",
+                          "id": "comment",
+                          "classNames": "px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-32",
+                          "placeholder": "Your comment",
+                          "rows": 4
+                        },
+                        {
+                          "type": "button",
+                          "variant": "primary",
+                          "classNames": "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg",
+                          "content": "Post Comment"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-2",
+      "name": "The Rise of AI in Software Development",
+      "path": "/article-2",
+      "slug": "/article-2",
+      "description": "Exploring how AI is transforming the software development landscape",
+      "keywords": "AI, software development, machine learning",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-2",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "The Rise of AI in Software Development"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "Alex Chen"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "March 20, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "10 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/800/400",
+                  "alt": "AI in software development",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "Artificial Intelligence is revolutionizing the way we develop software. From automated code generation to intelligent testing, AI is transforming every aspect of the software development lifecycle."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "AI-Powered Code Generation"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Modern AI tools can now generate code snippets, complete functions, and even create entire modules based on natural language descriptions. This significantly speeds up development time and reduces boilerplate code."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Use AI code assistants to handle repetitive tasks and focus on solving complex architectural problems."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Intelligent Testing and Debugging"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "AI-powered testing tools can automatically generate test cases, identify edge cases, and even predict potential bugs before they occur. This leads to more robust and reliable software."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-3",
+      "name": "Building Scalable Microservices with Go",
+      "path": "/article-3",
+      "slug": "/article-3",
+      "description": "A comprehensive guide to building microservices using Go",
+      "keywords": "Go, microservices, scalability",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-3",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "Building Scalable Microservices with Go"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "Michael Brown"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "March 25, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "12 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/800/401",
+                  "alt": "Go microservices",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "Go's simplicity, performance, and built-in concurrency support make it an excellent choice for building scalable microservices. Let's explore the best practices and patterns for Go microservices architecture."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Service Design Principles"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "When designing microservices in Go, focus on single responsibility, loose coupling, and high cohesion. Each service should have a clear, focused purpose and well-defined boundaries."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Start with a monolith and extract services only when you have clear boundaries and requirements."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Communication Patterns"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Go's standard library and ecosystem provide excellent tools for both synchronous (HTTP/RPC) and asynchronous (message queues) communication between services."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-4",
+      "name": "The Future of Web3 Development",
+      "path": "/article-4",
+      "slug": "/article-4",
+      "description": "Exploring the next generation of web development with Web3",
+      "keywords": "Web3, blockchain, decentralized",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-4",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "The Future of Web3 Development"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "Elena Rodriguez"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "March 28, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "15 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/800/402",
+                  "alt": "Web3 development",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "Web3 represents a paradigm shift in how we build and interact with web applications. From decentralized architectures to token-based economies, Web3 is redefining the internet."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Decentralized Applications"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "DApps are applications that run on a blockchain network rather than a centralized server. They offer transparency, security, and resistance to censorship."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Start with understanding the fundamentals of blockchain before diving into Web3 development."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Smart Contracts"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Smart contracts are self-executing contracts with the terms of the agreement directly written into code. They enable trustless transactions and automated processes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-5",
+      "name": "Modern Frontend Development with React 19",
+      "path": "/article-5",
+      "slug": "/article-5",
+      "description": "Latest features and best practices in React 19",
+      "keywords": "React, frontend, JavaScript",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-5",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "Modern Frontend Development with React 19"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "David Wilson"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "April 1, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "8 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/800/403",
+                  "alt": "React 19",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "React 19 introduces several groundbreaking features that make frontend development more efficient and enjoyable. Let's explore the latest advancements in React development."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Server Components"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Server Components allow you to write components that render on the server, reducing client-side JavaScript and improving performance. They're perfect for static or dynamic content that doesn't require interactivity."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Use Server Components for content-heavy pages to improve initial load time and SEO."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Automatic Batching"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "React 19's automatic batching of state updates improves performance by reducing unnecessary re-renders. This is particularly beneficial for complex applications with frequent state changes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "article-6",
+      "name": "DevOps Best Practices for 2024",
+      "path": "/article-6",
+      "slug": "/article-6",
+      "description": "Essential DevOps practices for modern software development",
+      "keywords": "DevOps, CI/CD, cloud",
+      "layout": "default",
+      "components": [
+        {
+          "type": "article",
+          "id": "article-6",
+          "classNames": "max-w-4xl mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "mb-12",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-5xl font-bold mb-4 text-gray-900",
+                  "content": "DevOps Best Practices for 2024"
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex items-center gap-4 text-gray-600",
+                  "children": [
+                    {
+                      "type": "block",
+                      "classNames": "flex items-center gap-2",
+                      "children": [
+                        {
+                          "type": "image",
+                          "src": "https://i.pravatar.cc/40",
+                          "alt": "Author avatar",
+                          "classNames": "rounded-full"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "span",
+                          "classNames": "font-medium",
+                          "content": "Sarah Thompson"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "April 5, 2024"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "•"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "span",
+                      "content": "14 min read"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mb-8",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "https://picsum.photos/800/404",
+                  "alt": "DevOps practices",
+                  "classNames": "w-full h-96 object-cover rounded-xl shadow-lg"
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "prose prose-lg max-w-none",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "lead",
+                  "content": "DevOps continues to evolve, with new tools and practices emerging to meet the demands of modern software development. Let's explore the essential DevOps practices for 2024."
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Infrastructure as Code"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "IaC has become a fundamental practice in DevOps, enabling teams to manage and provision infrastructure through code. This ensures consistency, repeatability, and version control of infrastructure."
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-blue-50 p-6 rounded-lg my-6",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-blue-800 font-medium",
+                      "content": "Pro Tip: Use tools like Terraform or Pulumi to manage your infrastructure as code."
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-3xl font-bold mt-8 mb-4",
+                  "content": "Continuous Integration/Deployment"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "content": "Modern CI/CD pipelines automate the entire software delivery process, from code commit to production deployment. This enables faster releases and higher quality software."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "name": "About Us",
+      "path": "/about",
+      "slug": "/about",
+      "description": "Learn more about our company and team",
+      "keywords": "about, company, team",
+      "layout": "default",
+      "components": [
+        {
+          "type": "block",
+          "classNames": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16",
+          "children": [
+            {
+              "type": "block",
+              "classNames": "text-center mb-16",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h1",
+                  "classNames": "text-4xl font-bold text-gray-900 mb-4",
+                  "content": "About TechBlog"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "text-xl text-gray-600 max-w-3xl mx-auto",
+                  "content": "We're a team of passionate technologists dedicated to sharing knowledge and insights about the ever-evolving world of software development."
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "grid grid-cols-1 md:grid-cols-2 gap-12 mb-16",
+              "children": [
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md p-8",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "h2",
+                      "classNames": "text-2xl font-semibold text-gray-900 mb-4",
+                      "content": "Our Mission"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-gray-600",
+                      "content": "To empower developers and tech enthusiasts with high-quality, practical content that helps them stay ahead in the rapidly changing technology landscape. We believe in making complex technical concepts accessible and providing actionable insights that drive innovation."
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md p-8",
+                  "children": [
+                    {
+                      "type": "text",
+                      "variant": "h2",
+                      "classNames": "text-2xl font-semibold text-gray-900 mb-4",
+                      "content": "Our Vision"
+                    },
+                    {
+                      "type": "text",
+                      "variant": "p",
+                      "classNames": "text-gray-600",
+                      "content": "To become the go-to platform for developers seeking reliable, up-to-date information about web development, software engineering, and emerging technologies. We aim to foster a community where knowledge sharing and continuous learning thrive."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "variant": "h2",
+              "classNames": "text-3xl font-bold text-gray-900 text-center mb-12",
+              "content": "Meet Our Team"
+            },
+            {
+              "type": "block",
+              "classNames": "grid grid-cols-1 md:grid-cols-3 gap-8",
+              "children": [
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://i.pravatar.cc/300",
+                      "alt": "Sarah Johnson",
+                      "classNames": "w-full h-64 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "text",
+                          "variant": "h3",
+                          "classNames": "text-xl font-semibold text-gray-900 mb-2",
+                          "content": "Sarah Johnson"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-blue-600 mb-2",
+                          "content": "Editor-in-Chief"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-gray-600",
+                          "content": "With over 10 years of experience in tech journalism, Sarah leads our editorial team in creating high-quality content that resonates with our audience."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://i.pravatar.cc/301",
+                      "alt": "Michael Chen",
+                      "classNames": "w-full h-64 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "text",
+                          "variant": "h3",
+                          "classNames": "text-xl font-semibold text-gray-900 mb-2",
+                          "content": "Michael Chen"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-blue-600 mb-2",
+                          "content": "Technical Director"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-gray-600",
+                          "content": "A full-stack developer with expertise in modern web technologies, Michael ensures our technical content is accurate and up-to-date."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "block",
+                  "classNames": "bg-white rounded-lg shadow-md overflow-hidden",
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "https://i.pravatar.cc/302",
+                      "alt": "Emily Rodriguez",
+                      "classNames": "w-full h-64 object-cover"
+                    },
+                    {
+                      "type": "block",
+                      "classNames": "p-6",
+                      "children": [
+                        {
+                          "type": "text",
+                          "variant": "h3",
+                          "classNames": "text-xl font-semibold text-gray-900 mb-2",
+                          "content": "Emily Rodriguez"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-blue-600 mb-2",
+                          "content": "Community Manager"
+                        },
+                        {
+                          "type": "text",
+                          "variant": "p",
+                          "classNames": "text-gray-600",
+                          "content": "Emily fosters our community engagement and ensures our content meets the needs of our diverse audience of developers."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "block",
+              "classNames": "mt-16 bg-blue-50 rounded-lg p-8",
+              "children": [
+                {
+                  "type": "text",
+                  "variant": "h2",
+                  "classNames": "text-2xl font-bold text-gray-900 mb-4",
+                  "content": "Join Our Community"
+                },
+                {
+                  "type": "text",
+                  "variant": "p",
+                  "classNames": "text-gray-600 mb-6",
+                  "content": "We're always looking for passionate writers and contributors to join our team. If you're interested in sharing your knowledge with our community, we'd love to hear from you."
+                },
+                {
+                  "type": "block",
+                  "classNames": "flex flex-col sm:flex-row gap-4",
+                  "children": [
+                    {
+                      "type": "link",
+                      "href": "mailto:contact@techblog.com",
+                      "classNames": "inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700",
+                      "content": "Contact Us"
+                    },
+                    {
+                      "type": "link",
+                      "href": "./contribute.html",
+                      "classNames": "inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
+                      "content": "Contribute"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

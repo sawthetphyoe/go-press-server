@@ -1,0 +1,19 @@
+{{define "render"}}
+    {{if eq .Component.Type "text"}}
+        {{template "atoms/text" .}}
+    {{else if eq .Component.Type "button"}}
+        {{template "atoms/button" .}}
+    {{else if eq .Component.Type "image"}}
+        {{template "atoms/image" .}}
+    {{else if eq .Component.Type "link"}}
+        {{template "atoms/link" .}}
+    {{else if eq .Component.Type "input"}}
+        {{template "atoms/input" .}}
+    {{else if eq .Component.Type "textarea"}}
+        {{template "atoms/textarea" .}}
+    {{else if eq .Component.Type "block"}}
+        {{template "atoms/block" .}}
+    {{else if eq .Component.Type "article"}}
+        {{template "molecules/article" .}}
+    {{end}}
+{{end}}

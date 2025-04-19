@@ -1,0 +1,12 @@
+{{ define "organisms/header" }}
+    {{ $page := .Page }}
+    {{ $project := .Project }}
+    {{with $project.Header.Component}}
+        <header class="{{ .ClassNames }}">
+            {{range .Children}}
+            {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project}}
+            {{ template "render" $renderContext }}
+        {{end}}
+    </header>
+ {{end}}
+{{ end }}

@@ -1,0 +1,12 @@
+{{define "atoms/block"}}
+{{ $page := .Page }}
+{{ $project := .Project }}
+ {{with .Component}}
+     <div class="{{.ClassNames}}">
+        {{range .Children}}
+            {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project -}}
+            {{template "render" $renderContext}}
+        {{end}}
+    </div>
+ {{end}}
+{{end}}

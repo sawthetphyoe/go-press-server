@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -48,20 +47,44 @@ func NewTemplateService() (*TemplateService, error) {
 		"now": func() int {
 			return time.Now().Year()
 		},
+		"safeHTML": func(s string) template.HTML {
+			return template.HTML(s)
+		},
 		"get": func(m map[string]any, key string) any {
 			return m[key]
+		},
+		"isLinkActive": func(href string, page models.Page) bool {
+			var isActive bool = false
+			if page.Slug == "/" {
+				isActive = href == "./index.html"
+			} else {
+				isActive = href == "."+page.Slug+".html"
+			}
+			return isActive
+		},
+		"getYear": func() int {
+			return time.Now().Year()
 		},
 	})
 
 	// Parse all template files
-	pattern := filepath.Join("internal", "templates", "*.tmpl")
-	templates, err := tmpl.ParseGlob(pattern)
-	if err != nil {
-		return nil, err
+	patterns := []string{
+		"internal/templates/atoms/*.tmpl",
+		"internal/templates/molecules/*.tmpl",
+		"internal/templates/organisms/*.tmpl",
+		"internal/templates/layouts/*.tmpl",
+		"internal/templates/*.tmpl",
+	}
+
+	for _, pattern := range patterns {
+		_, err := tmpl.ParseGlob(pattern)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse templates: %v", err)
+		}
 	}
 
 	return &TemplateService{
-		templates: templates,
+		templates: tmpl,
 	}, nil
 }
 
@@ -71,17 +94,10 @@ func (s *TemplateService) GenerateHTML(project models.Project, updateProgress fu
 	htmlFiles := make(map[string][]byte)
 
 	// Generate pages
-	// Filter out the blog-post template page
-	var filteredPages []models.Page
-	for _, page := range project.Pages {
-		if page.ID != "blog-post" {
-			filteredPages = append(filteredPages, page)
-		}
-	}
-	var totalToRender int = len(filteredPages) + len(project.BlogPosts)
+	var totalToRender int = len(project.Pages)
 
-	totalPages := len(filteredPages)
-	for i, page := range filteredPages {
+	totalPages := len(project.Pages)
+	for i, page := range project.Pages {
 		progress := (i * 100) / totalPages
 		updateProgress(progress, fmt.Sprintf("Generating static page: %d of %d ...", i+1, totalToRender))
 
@@ -89,93 +105,25 @@ func (s *TemplateService) GenerateHTML(project models.Project, updateProgress fu
 		var pageBuf bytes.Buffer
 
 		// Execute the template with the page data
-		err := s.templates.ExecuteTemplate(&pageBuf, page.Layout, struct {
+		err := s.templates.ExecuteTemplate(&pageBuf, "layouts/default", struct {
 			models.Project
-			Page               models.Page
-			GetComponentConfig func(string) models.ComponentConfig
-			BlogPost           *models.BlogPost
+			Page models.Page
 		}{
 			Project: project,
 			Page:    page,
-			GetComponentConfig: func(componentType string) models.ComponentConfig {
-				switch componentType {
-				case "header":
-					return page.Config.Header
-				case "footer":
-					return page.Config.Footer
-				case "main":
-					return page.Config.Main
-				default:
-					return models.ComponentConfig{}
-				}
-			},
-			BlogPost: nil,
 		})
 		if err != nil {
-			return nil, fmt.Errorf("failed to generate page %s: %v", page.Name, err)
+			return nil, fmt.Errorf("failed to generate page %s: %v", page.Title, err)
 		}
 
-		// Generate filename based on path
-		filename := strings.TrimPrefix(page.Path, "/")
+		// Generate filename based on slug
+		filename := strings.TrimPrefix(page.Slug, "/")
 		if filename == "" {
 			filename = "index.html"
 		} else {
 			filename = filename + ".html"
 		}
 		htmlFiles[filename] = pageBuf.Bytes()
-	}
-
-	// Generate blog post pages
-	totalPosts := len(project.BlogPosts)
-	for i, post := range project.BlogPosts {
-		progress := 50 + (i * 50 / totalPosts)
-		updateProgress(progress, fmt.Sprintf("Generating static page: %d of %d ...", totalPages+i+1, totalToRender))
-
-		// Find the blog post layout page
-		var blogLayoutPage *models.Page
-		for _, page := range project.Pages {
-			if page.ID == "blog-post" {
-				blogLayoutPage = &page
-				break
-			}
-		}
-		if blogLayoutPage == nil {
-			return nil, fmt.Errorf("blog post layout page not found")
-		}
-
-		// Create a buffer for the blog post page
-		var postBuf bytes.Buffer
-
-		// Execute the template with the blog post data
-		err := s.templates.ExecuteTemplate(&postBuf, blogLayoutPage.Layout, struct {
-			models.Project
-			Page               models.Page
-			GetComponentConfig func(string) models.ComponentConfig
-			BlogPost           *models.BlogPost
-		}{
-			Project: project,
-			Page:    *blogLayoutPage,
-			GetComponentConfig: func(componentType string) models.ComponentConfig {
-				switch componentType {
-				case "header":
-					return blogLayoutPage.Config.Header
-				case "footer":
-					return blogLayoutPage.Config.Footer
-				case "main":
-					return blogLayoutPage.Config.Main
-				default:
-					return models.ComponentConfig{}
-				}
-			},
-			BlogPost: &post,
-		})
-		if err != nil {
-			return nil, fmt.Errorf("failed to generate blog post %s: %v", post.Title, err)
-		}
-
-		// Generate a URL-friendly filename from the title
-		filename := strings.ToLower(strings.ReplaceAll(post.Title, " ", "-")) + ".html"
-		htmlFiles[filename] = postBuf.Bytes()
 	}
 
 	return htmlFiles, nil

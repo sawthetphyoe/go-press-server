@@ -1,0 +1,25 @@
+{{define "atoms/textarea"}}
+ {{with .Component}}
+    {{- $classes := or .ClassNames "" -}}
+    {{- $placeholder := or .Placeholder "" -}}
+    {{- $name := or .Name "" -}}
+    {{- $id := or .ID "" -}}
+    {{- $rows := or .Rows 3 -}}
+    {{- $label := or .Label "" -}}
+    {{- $required := or .Required false -}}
+    {{- $containerClasses := or .ContainerClassNames "" -}}
+    {{- $labelClasses := or .LabelClassNames "" -}}
+    <div class="{{$containerClasses}}">
+        {{- if $label -}}
+            <label for="{{$id}}" class="{{$labelClasses}}">{{$label}}</label>
+        {{- end -}}
+        <textarea 
+            id="{{$id}}" 
+            name="{{$name}}" 
+            class="w-full {{$classes}}" 
+            placeholder="{{$placeholder}}" 
+            rows="{{$rows}}"
+        ></textarea>
+    </div>
+{{end}}
+{{end}} 

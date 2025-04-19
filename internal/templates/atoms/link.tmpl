@@ -1,0 +1,26 @@
+{{define "atoms/link"}}
+{{ $page := .Page }}
+{{ $project := .Project }}
+ {{with .Component}}
+    {{- $classes := or .ClassNames "" -}}
+    {{- $target := or .Target "_self" -}}
+    {{- $rel := or .Rel "" -}}
+    {{- $isActive := isLinkActive .Href $page -}}
+    <a 
+    href="{{.Href}}"
+    class="inline-block {{$classes}} {{if $isActive}}!text-slate-600 !font-bold{{end}}"
+    target="{{$target}}"
+    {{if $rel}}rel="{{$rel}}"{{end}}
+    {{if .Title}}title="{{.Title}}"{{end}}
+    >
+        {{if .Content}}
+            {{.Content | safeHTML}}
+        {{else if .Children}}
+            {{range .Children}}
+                {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project -}}
+                {{template "render" $renderContext}}
+            {{end}}
+        {{end}}
+    </a>
+ {{end}} 
+{{end}} 

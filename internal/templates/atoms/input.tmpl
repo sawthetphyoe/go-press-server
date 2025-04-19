@@ -1,0 +1,26 @@
+{{define "atoms/input"}}
+ {{with .Component}}
+    {{- $type := or .Type "text" -}}
+    {{- $classes := or .ClassNames "" -}}
+    {{- $disabled := or .Disabled false -}}
+    {{- $required := or .Required false -}}
+    {{- $containerClassNames := or .ContainerClassNames "" -}}
+    {{- $labelClassNames := or .LabelClassNames "" -}}
+    <div class="{{$containerClassNames}}">
+        {{if .Label}}<label for="{{.ID}}" class="{{$labelClassNames}}">{{.Label}}</label>{{end}}
+        <input 
+            type="{{$type}}"
+            name="{{.Name}}"
+            id="{{.ID}}"
+            class="w-full {{$classes}}"
+            {{if .Value}}value="{{.Value}}"{{end}}
+            {{if .Placeholder}}placeholder="{{.Placeholder}}"{{end}}
+            {{if $disabled}}disabled{{end}}
+            {{if $required}}required{{end}}
+            {{if .Pattern}}pattern="{{.Pattern}}"{{end}}
+            {{if .Min}}min="{{.Min}}"{{end}}
+            {{if .Max}}max="{{.Max}}"{{end}}
+        />
+    </div>
+{{end}} 
+{{end}} 

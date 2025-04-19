@@ -23,7 +23,7 @@ func (app *application) submitBuildJob(w http.ResponseWriter, r *http.Request) {
 	projectID := params.ByName("id")
 
 	// For now, we'll use the sample project data
-	projectData, err := os.ReadFile("data/sample_project.json")
+	projectData, err := os.ReadFile("data/project_1.json")
 	if err != nil {
 		app.serverError(w, err)
 		return

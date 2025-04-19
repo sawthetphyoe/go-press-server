@@ -1,0 +1,12 @@
+{{define "molecules/article"}}
+{{ $page := .Page }}
+{{ $project := .Project }}
+ {{with .Component}}
+    <article id="{{.ID}}" class="{{.ClassNames}}">
+        {{range .Children}}
+            {{- $renderContext := dict "Component" .Component "Page" $page "Project" $project -}}
+            {{template "render" $renderContext}}
+        {{end}}
+    </article>
+ {{end}}
+{{end}}

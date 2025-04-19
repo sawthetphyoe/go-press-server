@@ -1,0 +1,19 @@
+{{define "atoms/image"}}
+{{with .Component}}
+    {{- $classes := or .ClassNames "" -}}
+    {{- $loading := or .Loading "lazy" -}}
+    {{- $containerClassNames := or .ContainerClassNames "" -}}
+    {{- $captionClassNames := or .CaptionClassNames "" -}}
+    <figure class="{{$containerClassNames}}">
+        <img 
+            src="{{.Src}}"
+            alt="{{.Alt}}"
+            class="{{$classes}}"
+            loading="{{$loading}}"
+            {{if .Width}}width="{{.Width}}"{{end}}
+            {{if .Height}}height="{{.Height}}"{{end}}
+        />
+        {{if .Caption}}<figcaption class="{{$captionClassNames}}">{{.Caption}}</figcaption>{{end}}
+    </figure>
+{{end}} 
+{{end}} 

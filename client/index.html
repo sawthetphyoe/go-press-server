@@ -188,7 +188,7 @@
           downloadBtn.addEventListener("click", async () => {
             if (currentJobId) {
               try {
-                addLogEntry("Checking build availability...");
+                addLogEntry("Checking download availability...");
                 const response = await fetch(
                   `http://localhost:4000/jobs/${currentJobId}/check`
                 );

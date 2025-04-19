@@ -1,104 +1,224 @@
 package models
 
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
 // Project represents the entire project structure
 type Project struct {
-	ID           string       `json:"id"`
-	Name         string       `json:"name"`
-	Description  string       `json:"description"`
-	GlobalConfig GlobalConfig `json:"globalConfig"`
-	Pages        []Page       `json:"pages"`
-	BlogPosts    []BlogPost   `json:"blogPosts"`
+	ID           string           `json:"id"`
+	Name         string           `json:"name"`
+	Description  string           `json:"description"`
+	GlobalConfig GlobalConfig     `json:"globalConfig"`
+	Pages        []Page           `json:"pages"`
+	Header       ComponentWrapper `json:"header"`
+	Footer       ComponentWrapper `json:"footer"`
 }
 
-// GlobalConfig represents the global theme configuration
-type GlobalConfig struct {
-	Theme Theme `json:"theme"`
-}
-
-// Theme represents the design system
-type Theme struct {
-	Colors     Colors     `json:"colors"`
-	Typography Typography `json:"typography"`
-	Spacing    Spacing    `json:"spacing"`
-}
-
-// Colors represents the color palette
-type Colors struct {
-	Primary    string `json:"primary"`
-	Secondary  string `json:"secondary"`
-	Background string `json:"background"`
-	Text       string `json:"text"`
-}
-
-// Typography represents the typography system
-type Typography struct {
-	FontFamily string    `json:"fontFamily"`
-	FontSizes  FontSizes `json:"fontSizes"`
-}
-
-// FontSizes represents the typography scale
-type FontSizes struct {
-	Small   string `json:"sm"`
-	Base    string `json:"base"`
-	Large   string `json:"lg"`
-	XLarge  string `json:"xl"`
-	XXLarge string `json:"2xl"`
-}
-
-// Spacing represents the spacing system
-type Spacing struct {
-	Small  string `json:"sm"`
-	Medium string `json:"md"`
-	Large  string `json:"lg"`
-	XLarge string `json:"xl"`
-}
-
-// Page represents a page in the project
+// Page represents a page in the CMS
 type Page struct {
-	ID         string      `json:"id"`
-	Name       string      `json:"name"`
-	Path       string      `json:"path"`
-	Layout     string      `json:"layout"`
-	Config     PageConfig  `json:"config"`
-	Components []Component `json:"components"`
+	ID         string             `json:"id"`
+	Title      string             `json:"title"`
+	Slug       string             `json:"slug"`
+	Components []ComponentWrapper `json:"components"`
+	CreatedAt  time.Time          `json:"created_at"`
+	UpdatedAt  time.Time          `json:"updated_at"`
 }
 
-// PageConfig represents the configuration for a page
-type PageConfig struct {
-	Header ComponentConfig `json:"header"`
-	Main   ComponentConfig `json:"main"`
-	Footer ComponentConfig `json:"footer"`
+// Base Component Interface
+type BaseComponent struct {
+	Type       string             `json:"type"`
+	ID         string             `json:"id"`
+	ClassNames string             `json:"classNames,omitempty"`
+	Children   []ComponentWrapper `json:"children,omitempty"`
+	Content    string             `json:"content,omitempty"`
 }
 
-// ComponentConfig represents the style configuration for a component
-type ComponentConfig struct {
-	ClassNames string `json:"classNames"`
+// Text Component
+type TextComponent struct {
+	BaseComponent
+	Variant string `json:"variant"`
 }
 
-// Component represents a component in the project
-type Component struct {
-	Type    string                 `json:"type"`
-	Content map[string]interface{} `json:"content,omitempty"`
-	Text    string                 `json:"text,omitempty"`
-	URL     string                 `json:"url,omitempty"`
-	Label   string                 `json:"label,omitempty"`
+// Image Component
+type ImageComponent struct {
+	BaseComponent
+	Src                 string `json:"src"`
+	Alt                 string `json:"alt"`
+	Width               string `json:"width,omitempty"`
+	Height              string `json:"height,omitempty"`
+	ContainerClassNames string `json:"containerClassNames,omitempty"`
+	LabelClassNames     string `json:"labelClassNames,omitempty"`
+	Caption             string `json:"caption,omitempty"`
+	CaptionClassNames   string `json:"captionClassNames,omitempty"`
+	Loading             string `json:"loading,omitempty"`
 }
 
-// BlogPost represents a blog post
-type BlogPost struct {
-	ID          string         `json:"id"`
-	Title       string         `json:"title"`
-	CreatedDate string         `json:"createdDate"`
-	Author      string         `json:"author"`
-	ReadTime    string         `json:"readTime"`
-	Preview     string         `json:"preview"`
-	Content     []ContentBlock `json:"content"`
+// Link Component
+type LinkComponent struct {
+	BaseComponent
+	Href   string `json:"href"`
+	Target string `json:"target,omitempty"`
+	Rel    string `json:"rel,omitempty"`
+	Title  string `json:"title,omitempty"`
 }
 
-// ContentBlock represents a block of content in a blog post
-type ContentBlock struct {
-	Type  string `json:"type"`
-	Text  string `json:"text,omitempty"`
-	Label string `json:"label,omitempty"`
-	URL   string `json:"url,omitempty"`
+// Block Component
+type BlockComponent struct {
+	BaseComponent
+}
+
+// Header Component
+type HeaderComponent struct {
+	BaseComponent
+}
+
+// Article Component
+type ArticleComponent struct {
+	BaseComponent
+}
+
+// Input Component
+type InputComponent struct {
+	BaseComponent
+	Type                string `json:"type,omitempty"`
+	Name                string `json:"name,omitempty"`
+	Placeholder         string `json:"placeholder,omitempty"`
+	Label               string `json:"label,omitempty"`
+	Required            bool   `json:"required,omitempty"`
+	Value               string `json:"value,omitempty"`
+	MaxLength           int    `json:"maxLength,omitempty"`
+	Min                 int    `json:"min,omitempty"`
+	Max                 int    `json:"max,omitempty"`
+	Pattern             string `json:"pattern,omitempty"`
+	Disabled            bool   `json:"disabled,omitempty"`
+	ContainerClassNames string `json:"containerClassNames,omitempty"`
+	LabelClassNames     string `json:"labelClassNames,omitempty"`
+}
+
+// TextArea Component
+type TextAreaComponent struct {
+	BaseComponent
+	Name                string `json:"name,omitempty"`
+	Placeholder         string `json:"placeholder,omitempty"`
+	Label               string `json:"label,omitempty"`
+	Required            bool   `json:"required,omitempty"`
+	Value               string `json:"value,omitempty"`
+	Rows                int    `json:"rows,omitempty"`
+	ContainerClassNames string `json:"containerClassNames,omitempty"`
+	LabelClassNames     string `json:"labelClassNames,omitempty"`
+}
+
+type ButtonComponent struct {
+	BaseComponent
+	OnClick  string `json:"onClick,omitempty"`
+	Disabled bool   `json:"disabled,omitempty"`
+}
+
+type FooterComponent struct {
+	BaseComponent
+}
+
+// Component interface for all component types
+type Component interface {
+	GetType() string
+	GetID() string
+	GetClassNames() string
+	GetChildren() []Component
+	GetContent() string
+}
+
+// Implement Component interface for each type
+func (c BaseComponent) GetType() string       { return c.Type }
+func (c BaseComponent) GetID() string         { return c.ID }
+func (c BaseComponent) GetClassNames() string { return c.ClassNames }
+func (c BaseComponent) GetChildren() []Component {
+	children := make([]Component, len(c.Children))
+	for i, child := range c.Children {
+		children[i] = child.Component
+	}
+	return children
+}
+func (c BaseComponent) GetContent() string { return c.Content }
+
+// ComponentWrapper is a wrapper type for Component interface to implement custom unmarshaler
+type ComponentWrapper struct {
+	Component
+}
+
+// UnmarshalJSON implements json.Unmarshaler for ComponentWrapper
+func (cw *ComponentWrapper) UnmarshalJSON(data []byte) error {
+	var base BaseComponent
+	if err := json.Unmarshal(data, &base); err != nil {
+		return err
+	}
+
+	switch base.Type {
+	case "text":
+		var text TextComponent
+		if err := json.Unmarshal(data, &text); err != nil {
+			return err
+		}
+		cw.Component = &text
+	case "image":
+		var image ImageComponent
+		if err := json.Unmarshal(data, &image); err != nil {
+			return err
+		}
+		cw.Component = &image
+	case "link":
+		var link LinkComponent
+		if err := json.Unmarshal(data, &link); err != nil {
+			return err
+		}
+		cw.Component = &link
+	case "block":
+		var block BlockComponent
+		if err := json.Unmarshal(data, &block); err != nil {
+			return err
+		}
+		cw.Component = &block
+	case "header":
+		var header HeaderComponent
+		if err := json.Unmarshal(data, &header); err != nil {
+			return err
+		}
+		cw.Component = &header
+	case "footer":
+		var footer FooterComponent
+		if err := json.Unmarshal(data, &footer); err != nil {
+			return err
+		}
+		cw.Component = &footer
+	case "article":
+		var article ArticleComponent
+		if err := json.Unmarshal(data, &article); err != nil {
+			return err
+		}
+		cw.Component = &article
+	case "input":
+		var input InputComponent
+		if err := json.Unmarshal(data, &input); err != nil {
+			return err
+		}
+		cw.Component = &input
+	case "textarea":
+		var textarea TextAreaComponent
+		if err := json.Unmarshal(data, &textarea); err != nil {
+			return err
+		}
+		cw.Component = &textarea
+	case "button":
+		var button ButtonComponent
+		if err := json.Unmarshal(data, &button); err != nil {
+			return err
+		}
+		cw.Component = &button
+	default:
+		return fmt.Errorf("unknown component type: %s", base.Type)
+	}
+
+	return nil
 }

@@ -1,0 +1,15 @@
+{{ define "organisms/footer" }}
+    {{ $page := .Page }}
+    {{ $project := .Project }}
+    {{ $component := $project.Footer.Component }}
+    <footer class="{{ $component.ClassNames }}">
+    {{ if len $component.Children }}
+        {{ range $component.Children }}
+            {{ $renderContext := dict "Component" .Component "Page" $page "Project" $project }}
+            {{ template "render" $renderContext }}
+        {{ end }}
+    {{ else }}
+        <p class="text-xs text-center">© {{ getYear }} {{ .Name }}, All rights reserved.</p>
+    {{ end }}
+    </footer>
+{{ end }}

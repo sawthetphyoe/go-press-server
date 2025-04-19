@@ -1,0 +1,21 @@
+{{define "atoms/button"}}
+ {{with .Component}}
+     {{- $type := or .Type "button" -}}
+    {{- $classes := or .ClassNames "px-4 py-2 rounded" -}}
+    {{- $disabled := or .Disabled false -}}
+    <button 
+        type="{{$type}}"
+        class="{{$classes}}"
+        {{if .OnClick}}onclick="{{.OnClick}}"{{end}}
+        {{if $disabled}}disabled{{end}}
+    >
+        {{if .Content}}
+            {{.Content}}
+        {{else if .Children}}
+            {{range .Children}}
+                {{template "render" .}}
+            {{end}}
+        {{end}}
+    </button>
+ {{end}} 
+{{end}} 
